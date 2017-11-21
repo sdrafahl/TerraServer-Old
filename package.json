@@ -1,0 +1,19 @@
+{
+  "name": "myrentalserver",
+  "version": "1.0.0",
+  "description": "Server for myrental service",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/sdrafahl/MyRentalServer.git"
+  },
+  "author": "Shane Drafahl",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/sdrafahl/MyRentalServer/issues"
+  },
+  "homepage": "https://github.com/sdrafahl/MyRentalServer#readme"
+}
