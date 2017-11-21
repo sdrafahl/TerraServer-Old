@@ -10,3 +10,6 @@ router.use(function(req, res, next) {
 router.get("/", function(req, res) {
     console.log("hello server");
 });
+
+
+module.exports = router;

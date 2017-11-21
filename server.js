@@ -3,7 +3,7 @@ var express = require("express");
 var app = express();
 var cluster = require('cluster');
 
-var router = require('./node/router.js');
+var router = require('./Node/router.js');
 
 if(cluster.isMaster) {
     const numCPUs = require('os')
@@ -35,6 +35,4 @@ if(cluster.isMaster) {
   app.listen(port, function () {
     console.log("Live at Port: " + port);
   });
-}
-
 }
