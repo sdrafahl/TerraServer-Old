@@ -1,9 +1,14 @@
 var express = require('express');
-var router = express.Router();
 
-router.post('/create', (req, res, next) => {
-  console.log("Create User");
-  
+var DataBase = require('../modules/database.js');
+
+var router = express.Router();
+var database = new DataBase();
+
+router.post('/create', (request, response) => {
+    database.registerUser(request, (callBack) => {
+        response.json(callBack);
+    });
 });
 
 module.exports = router;

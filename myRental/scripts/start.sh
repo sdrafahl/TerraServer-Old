@@ -1,4 +1,4 @@
 #!/bin/bash
-echo "Starting Express Server on Port 3001"
+echo "Starting Express Server on Port 3002"
 cd ..
-PORT=3001 node bin/www
+PORT=3002 node bin/www
