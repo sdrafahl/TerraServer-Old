@@ -23,16 +23,6 @@ cd scripts
 
 ## Changing The Database
 
-If you want to change or update the database you will need to first load the current database with the setup script.
-After this is done you would need to change the MySQL database with whatever program you would like. After this is done
-run this command.
+The database is created with Knex. Here is a guide.
 
-
-```
-cd scripts
-
-./dumpMysql.sh
-
-```
-
-This will create the databaseSchema.sql file which is used to load the latest database schema.
+https://alexzywiak.github.io/running-migrations-with-knex/index.html
