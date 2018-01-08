@@ -26,3 +26,17 @@ cd scripts
 The database is created with Knex. Here is a guide.
 
 https://alexzywiak.github.io/running-migrations-with-knex/index.html
+
+To apply migrations run
+
+```
+knex migrate:latest
+
+```
+
+To create a migration
+
+```
+knex migrate:make setup
+
+```
