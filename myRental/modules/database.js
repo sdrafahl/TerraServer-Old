@@ -3,50 +3,56 @@ var method = dataBaseModule.prototype;
 var fs = require('fs');
 var mysql = require("mysql");
 var bcrypt = require('bcryptjs');
-
-var connection = null;
+var knex = require('knex')({
+  client: 'mysql',
+  connection: {
+    host     : '',
+    user     : 'shane',
+    password : 'devPassword',
+    database : 'MY_RENTAL',
+    charset  : 'utf8'
+  }
+});
 
 function dataBaseModule() {
-  this.dat = "test";
-  connection = mysql.createConnection({
-    host: "",
-    user: "shane",
-    password: "devPassword",
-    database: "MY_RENTAL",
-  });
 
-  connection.connect(function (err) {
-    if (err) {
-      console.log('Error Connecting to MYSQL');
-      return;
-    }
-    console.log("Connection Established With MYSQL");
-  });
+    bookshelf = require('bookshelf')(knex);
+
+    exports.up = (knex) => {
+        return knex.schema.createTableIfNotExists('USERS', (table) => {
+            table.increments('id').primary();
+            table.string('NAME');
+            table.string('PASSWORD');
+            table.string('EMAIL');
+        });
+    };
+
+    exports.down = (knex) => {
+        return knex.schema.dropTable('USERS');
+    };
+
+    var User = bookshelf.Model.extend ({
+        tableName: 'USERS'
+    });
+
 
 };
 
 method.registerUser = (request, callBack) => {
+    console.log("Registering User");
     var password = hashPassword(request.body.password);
     var email = request.body.email;
     var username = request.body.username;
 
-    var checkUserSql = "SELECT * FROM USERS WHERE NAME = '" + username + "' OR EMAIL = '" + email + "'";
-    console.log(checkUserSql);
-    connection.query(checkUserSql, (err, rows) => {
-        if(rows.length == 0) {
-            var submitUserSql = "INSERT INTO USERS VALUES('" + username + "','" + password + "', NULL, '" + email  + "')";
-            console.log(submitUserSql);
-            connection.query(submitUserSql, (err, rows) => {
-                return callBack ({
-                    success: true,
-                });
-            });
-        } else {
-            return callBack ({
-                success: false,
-            });
-        }
-    });
+    var insert = {NAME: username, PASSWORD: password, EMAIL: email};
+
+    knex.select("*").from("USERS").
+
+    knex.insert(insert).into("USERS").then(() => {
+        return callBack ({
+            success: true,
+        });
+    })
 }
 
 function hashPassword(password) {
