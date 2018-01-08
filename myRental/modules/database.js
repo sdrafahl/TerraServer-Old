@@ -14,9 +14,13 @@ var knex = require('knex')({
   }
 });
 
+var User = null;
+
 function dataBaseModule() {
 
     bookshelf = require('bookshelf')(knex);
+
+    bookshelf.plugin(require('bookshelf-check-duplicates'));
 
     exports.up = (knex) => {
         return knex.schema.createTableIfNotExists('USERS', (table) => {
@@ -31,11 +35,10 @@ function dataBaseModule() {
         return knex.schema.dropTable('USERS');
     };
 
-    var User = bookshelf.Model.extend ({
-        tableName: 'USERS'
+    User = bookshelf.Model.extend ({
+        tableName: 'USERS',
+        duplicates: ['NAME', 'EMAIL'],
     });
-
-
 };
 
 method.registerUser = (request, callBack) => {
@@ -46,13 +49,18 @@ method.registerUser = (request, callBack) => {
 
     var insert = {NAME: username, PASSWORD: password, EMAIL: email};
 
-    knex.select("*").from("USERS").
-
-    knex.insert(insert).into("USERS").then(() => {
-        return callBack ({
-            success: true,
+    User.forge(insert)
+        .save()
+        .then((user) => {
+            return callBack ({
+                success: true,
+            });
+        })
+        .catch(function (err) {
+            return callBack ({
+                success: false,
+            });
         });
-    })
 }
 
 function hashPassword(password) {
