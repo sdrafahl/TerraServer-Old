@@ -2,16 +2,41 @@
 
 ## Starting The Service
 
-Update NPM
+Run the setup script to load the database schema file. The username is Shane. You will need to setup your own local
+mysql database on your system with that username before running the script.
 
 ```
-sudo npm install
+cd scripts
+
+./setup.sh
 
 ```
 
 Start the server
 
 ```
-PORT=3001 node bin/www
+cd scripts
+
+./start.sh
+
+```
+
+## Changing The Database
+
+The database is created with Knex. Here is a guide.
+
+https://alexzywiak.github.io/running-migrations-with-knex/index.html
+
+To apply migrations run
+
+```
+knex migrate:latest
+
+```
+
+To create a migration
+
+```
+knex migrate:make setup
 
 ```

@@ -5,6 +5,8 @@ var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 
+var userController = require('./routes/userController');
+
 var app = express();
 
 app.set('views', path.join(__dirname, 'views'));
@@ -15,6 +17,8 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, '../../MyRentalWeb/build')));
+
+app.use('/users', userController);
 
 app.use((error, request, response, next) => {
     response.locals.message = error.message;
