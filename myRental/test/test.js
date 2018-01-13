@@ -1,9 +1,22 @@
 var assert = require('assert');
 var MockExpress = require('mock-express');
 
+var fs = require('fs');
+var mysql = require("mysql");
+var bcrypt = require('bcryptjs');
+var knex = require('knex')({
+  client: 'mysql',
+  connection: {
+    host     : '',
+    user     : 'shane',
+    password : 'devPassword',
+    database : 'MY_RENTAL_TEST',
+    charset  : 'utf8'
+  }
+});
+
 var app = MockExpress();
 
-/* Fake Moka Test */
 describe('Array', function() {
   describe('#indexOf()', function() {
     it('should return -1 when the value is not present', function() {
@@ -12,10 +25,18 @@ describe('Array', function() {
   });
 });
 
-describe('userController', function() {
-  describe('post -> /create', function() {
-    it('It should at a user to the database', function() {
+describe('Database Module Test', function() {
 
+  beforeEach(function(done) {
+
+  });
+
+  describe('userController', function() {
+    describe('post -> /create', function() {
+      it('A user should be created', function() {
+
+      });
     });
   });
+
 });
