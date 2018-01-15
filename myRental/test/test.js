@@ -1,17 +1,19 @@
 var assert = require('assert');
 var MockExpress = require('mock-express');
-
-var fs = require('fs');
 var mysql = require("mysql");
+var fs = require('fs');
 var bcrypt = require('bcryptjs');
+
+var config = require('./config.json');
+
 var knex = require('knex')({
-  client: 'mysql',
+  client: config.database_test.test,
   connection: {
-    host     : '',
-    user     : 'shane',
-    password : 'devPassword',
-    database : 'MY_RENTAL_TEST',
-    charset  : 'utf8'
+    host     : config.database_test.host,
+    user     : config.database_test.user,
+    password : config.database_test.password,
+    database : config.database_test.database,
+    charset  : config.database_test.charset,
   }
 });
 

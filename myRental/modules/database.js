@@ -3,21 +3,22 @@ var method = dataBaseModule.prototype;
 var fs = require('fs');
 var mysql = require("mysql");
 var bcrypt = require('bcryptjs');
-var config = require('../config.json')
-var knex = require('knex')({
-  client: 'mysql',
-  connection: {
-    host     : config.database_dev.host,
-    user     : config.database_dev.user,
-    password : config.database_dev.password,
-    database : config.database_dev.database,
-    charset  : config.database_dev.charset
-  }
-});
 
+var knex = null;
 var User = null;
 
-function dataBaseModule() {
+function dataBaseModule(database_config) {
+
+    knex = require('knex')({
+      client:  database_config.client,
+      connection: {
+        host     : database_config.host,
+        user     : database_config.user,
+        password : database_config.password,
+        database : database_config.database,
+        charset  : database_config.charset,
+      }
+    });
 
     bookshelf = require('bookshelf')(knex);
 
