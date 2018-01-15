@@ -3,14 +3,15 @@ var method = dataBaseModule.prototype;
 var fs = require('fs');
 var mysql = require("mysql");
 var bcrypt = require('bcryptjs');
+var config = require('../config.json')
 var knex = require('knex')({
   client: 'mysql',
   connection: {
-    host     : '',
-    user     : 'shane',
-    password : 'devPassword',
-    database : 'MY_RENTAL',
-    charset  : 'utf8'
+    host     : config.database_dev.host,
+    user     : config.database_dev.user,
+    password : config.database_dev.password,
+    database : config.database_dev.database,
+    charset  : config.database_dev.charset
   }
 });
 
