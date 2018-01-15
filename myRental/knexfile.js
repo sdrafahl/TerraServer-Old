@@ -13,4 +13,15 @@ module.exports = {
        }
      },
 
+     testing: {
+        client: 'mysql',
+        connection: {
+          host: '',
+          user: 'tester',
+          password: 'goon',
+          database: 'MY_RENTAL_TEST',
+          charset: 'utf8'
+        }
+      },
+
 };
