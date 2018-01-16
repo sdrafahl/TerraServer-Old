@@ -5,14 +5,9 @@ var fs = require('fs');
 var bcrypt = require('bcryptjs');
 var sys = require('sys');
 var exec = require('child_process').exec;
-var bookshelf = require('bookshelf')(knex);
-
 var config = require('../config.json');
-var DataBase = require('../modules/database.js');
-
-var database = new DataBase(config.database_test);
-
 var knex = require('knex')({
+
   client: config.database_test.client,
   connection: {
     host     : config.database_test.host,
@@ -21,8 +16,22 @@ var knex = require('knex')({
     database : config.database_test.database,
     charset  : config.database_test.charset,
   },
-  debug: true,
 });
+
+var bookshelf = require('bookshelf')(knex);
+
+
+var DataBase = require('../modules/database.js');
+
+var database = new DataBase(config.database_test);
+
+let testRequest = {
+    body: {
+        password:'pass1',
+        email:'test@me.com',
+        username:'user1',
+    }
+};
 
 User = bookshelf.Model.extend ({
     tableName: 'USERS',
@@ -40,42 +49,30 @@ describe('Array', function() {
 });
 
 describe('Database Module Test', function() {
-
   beforeEach(function(done) {
-      exec("knex migrate:rollback --env development", function(err, stdout, stderr) {
-          console.log(stdout);
-          exec("knex migrate:latest --env development", function(err, stdout, stderr) {
-              console.log(stdout);
-              done();
+      exec("knex migrate:rollback --env testing", function(err, stdout, stderr) {
+          exec("knex migrate:latest --env testing", function(err, stdout, stderr) {
+              database.registerUser(testRequest, (callBack) => {
+                  done();
+              });
           });
       });
-
   });
 
   describe('userController', function() {
     describe('post -> /create', function() {
       it('A user should be created', (done) => {
-          var testRequest = {
-              body: {
-                  password:"pass1",
-                  email:"test@me.com",
-                  username:"user1",
-              }
-          };
-          database.registerUser(testRequest, (callBack) => {
-              new User({email:"test@me.com"})
-              .fetch()
-              .then((model) => {
-                 assert.equal(model.get('password'), testRequest.body.password);
-                 done();
-              })
-              .catch((err) => {
-                assert.equal(0,1);
-                done();
-              });
+          User.where('NAME', testRequest.body.username)
+          .fetch()
+          .then(function(user) {
+              assert.equal(user.get('NAME'), testRequest.body.username);
+              done();
+          })
+          .catch((err) => {
+             assert.equal(1,0);
+             done();
           });
       });
     });
   });
-
 });

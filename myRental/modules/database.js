@@ -31,7 +31,6 @@ function dataBaseModule(database_config) {
 };
 
 method.registerUser = (request, callBack) => {
-    console.log("Registering User");
     var password = hashPassword(request.body.password);
     var email = request.body.email;
     var username = request.body.username;
