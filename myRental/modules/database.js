@@ -4,30 +4,14 @@ var fs = require('fs');
 var mysql = require("mysql");
 var bcrypt = require('bcryptjs');
 
-var knex = null;
 var User = null;
 
-function dataBaseModule(database_config) {
-
-    knex = require('knex')({
-      client:  database_config.client,
-      connection: {
-        host     : database_config.host,
-        user     : database_config.user,
-        password : database_config.password,
-        database : database_config.database,
-        charset  : database_config.charset,
-      }
-    });
-
-    bookshelf = require('bookshelf')(knex);
-
-    bookshelf.plugin(require('bookshelf-check-duplicates'));
-
-    User = bookshelf.Model.extend ({
-        tableName: 'USERS',
-        duplicates: ['NAME', 'EMAIL'],
-    });
+function dataBaseModule(type) {
+    if(type == "test") {
+        User = require('../models/User').UserTest;
+    } else {
+        User = require('../models/User').User;
+    }
 };
 
 method.registerUser = (request, callBack) => {
@@ -45,6 +29,7 @@ method.registerUser = (request, callBack) => {
             });
         })
         .catch(function (err) {
+            console.log(err);
             return callBack ({
                 success: false,
             });
