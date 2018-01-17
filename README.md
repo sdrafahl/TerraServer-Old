@@ -2,6 +2,14 @@
 
 ## Starting The Service
 
+The first thing you will need to do if you plan on using the React project with the express
+service is you will need to build the react side. You will also need to build it.
+
+```
+npm build
+
+```
+
 Run the setup script to load the database schema file. The username is Shane. You will need to setup your own local
 mysql database on your system with that username before running the script.
 

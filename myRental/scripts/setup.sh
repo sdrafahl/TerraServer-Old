@@ -5,6 +5,8 @@ sudo npm install bookshelf --save
 sudo npm install bookshelf-check-duplicates -g
 sudo npm install mocha -g
 sudo npm install mock-express -g
+sudo npm install mysql
+sudo npm install bcrypt
 sudo npm install
 echo "Setting up Databases"
 echo "Enter your MySQL root password"
