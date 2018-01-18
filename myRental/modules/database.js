@@ -7,7 +7,7 @@ var bcrypt = require('bcryptjs');
 var User = null;
 
 function dataBaseModule(type) {
-    if(type == "test") {
+    if(type === "test") {
         User = require('../models/User').UserTest;
     } else {
         User = require('../models/User').User;
