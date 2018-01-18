@@ -12,15 +12,6 @@ var User = require('../models/User.js').UserTest;
 
 var database = new DataBase("test");
 
-
-describe('Array', function() {
-  describe('#indexOf()', function() {
-    it('should return -1 when the value is not present', function() {
-      assert.equal([1,2,3].indexOf(4), -1);
-    });
-  });
-});
-
 describe('Database Module Test', function() {
   beforeEach(function(done) {
       exec("knex migrate:rollback --env testing", function(err, stdout, stderr) {
