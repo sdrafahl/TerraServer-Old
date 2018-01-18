@@ -1,0 +1,23 @@
+{
+    "database_dev" : {
+        "client": "mysql",
+        "connection": {
+            "database": "TERRA_DEV",
+            "user": "dev",
+            "password": "goon",
+            "charset": "utf8",
+            "host": ""
+        }
+    },
+
+    "database_test" : {
+        "client": "mysql",
+        "connection": {
+            "database": "TERRA_TEST",
+            "user": "tester",
+            "password": "goon",
+            "charset": "utf8",
+            "host": ""
+        }
+    }
+}

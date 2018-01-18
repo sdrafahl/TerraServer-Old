@@ -1,16 +1,5 @@
-// Update with your config settings.
-
+var config = require('./config.json');
 module.exports = {
-
-    development: {
-       client: 'mysql',
-       connection: {
-         host: '',
-         user: 'shane',
-         password: 'devPassword',
-         database: 'MY_RENTAL',
-         charset: 'utf8'
-       }
-     },
-
+    development: config.database_dev,
+     testing: config.database_test,
 };

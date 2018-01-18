@@ -48,3 +48,20 @@ To create a migration
 knex migrate:make setup
 
 ```
+
+## Testing
+
+Express uses Mocha tests to test for functionality and unit testing.
+
+To run the tests you can either run from the scripts directory.   
+
+```
+./tests.sh
+
+```
+Or you can run it using npm
+
+```
+npm test
+
+```

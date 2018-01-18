@@ -3,33 +3,18 @@ var method = dataBaseModule.prototype;
 var fs = require('fs');
 var mysql = require("mysql");
 var bcrypt = require('bcryptjs');
-var knex = require('knex')({
-  client: 'mysql',
-  connection: {
-    host     : '',
-    user     : 'shane',
-    password : 'devPassword',
-    database : 'MY_RENTAL',
-    charset  : 'utf8'
-  }
-});
 
 var User = null;
 
-function dataBaseModule() {
-
-    bookshelf = require('bookshelf')(knex);
-
-    bookshelf.plugin(require('bookshelf-check-duplicates'));
-
-    User = bookshelf.Model.extend ({
-        tableName: 'USERS',
-        duplicates: ['NAME', 'EMAIL'],
-    });
+function dataBaseModule(type) {
+    if(type === "test") {
+        User = require('../models/User').UserTest;
+    } else {
+        User = require('../models/User').User;
+    }
 };
 
 method.registerUser = (request, callBack) => {
-    console.log("Registering User");
     var password = hashPassword(request.body.password);
     var email = request.body.email;
     var username = request.body.username;
@@ -44,6 +29,7 @@ method.registerUser = (request, callBack) => {
             });
         })
         .catch(function (err) {
+            console.log(err);
             return callBack ({
                 success: false,
             });
