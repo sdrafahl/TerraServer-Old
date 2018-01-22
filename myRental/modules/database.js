@@ -1,10 +1,10 @@
-var method = dataBaseModule.prototype;
+let method = dataBaseModule.prototype;
 
-var fs = require('fs');
-var mysql = require("mysql");
-var bcrypt = require('bcryptjs');
+let fs = require('fs');
+let mysql = require("mysql");
+let bcrypt = require('bcryptjs');
 
-var User = null;
+let User = null;
 
 function dataBaseModule(type) {
     if(type === "test") {
@@ -15,11 +15,11 @@ function dataBaseModule(type) {
 };
 
 method.registerUser = (request, callBack) => {
-    var password = hashPassword(request.body.password);
-    var email = request.body.email;
-    var username = request.body.username;
+    let password = hashPassword(request.body.password);
+    let email = request.body.email;
+    let username = request.body.username;
 
-    var insert = {NAME: username, PASSWORD: password, EMAIL: email};
+    let insert = {NAME: username, PASSWORD: password, EMAIL: email};
 
     User.forge(insert)
         .save()
@@ -37,7 +37,7 @@ method.registerUser = (request, callBack) => {
 }
 
 function hashPassword(password) {
-  var salt = bcrypt.genSaltSync(10);
+  let salt = bcrypt.genSaltSync(10);
   return bcrypt.hashSync(password, salt);
 }
 

@@ -1,12 +1,12 @@
-var bookshelf = require('../modules/bookshelfConfig.js').bookshelf;
-var bookshelfTest = require('../modules/bookshelfConfig.js').bookshelfTest;
+let bookshelf = require('../modules/bookshelfConfig.js').bookshelf;
+let bookshelfTest = require('../modules/bookshelfConfig.js').bookshelfTest;
 
-var User = bookshelf.Model.extend ({
+let User = bookshelf.Model.extend ({
     tableName: 'USERS',
     duplicates: ['NAME', 'EMAIL'],
 });
 
-var UserTest = bookshelfTest.Model.extend ({
+let UserTest = bookshelfTest.Model.extend ({
     tableName: 'USERS',
     duplicates: ['NAME', 'EMAIL'],
 });

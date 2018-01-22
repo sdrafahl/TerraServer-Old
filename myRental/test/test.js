@@ -1,28 +1,27 @@
-var assert = require('assert');
-var MockExpress = require('mock-express');
-var mysql = require("mysql");
-var fs = require('fs');
-var bcrypt = require('bcryptjs');
-var sys = require('sys');
-var exec = require('child_process').exec;
+let assert = require('assert');
+let MockExpress = require('mock-express');
+let mysql = require("mysql");
+let fs = require('fs');
+let bcrypt = require('bcryptjs');
+let exec = require('child_process').exec;
 
-var DataBase = require('../modules/database.js');
-var testUserRequest = require('./testUserRequest.json');
-var User = require('../models/User.js').UserTest;
+let DataBase = require('../modules/database.js');
+let testUserRequest = require('./testUserRequest.json');
+let User = require('../models/User.js').UserTest;
 
-var database = new DataBase("test");
+let database = new DataBase("test");
 
-describe('Database Module Test', function() {
-  beforeEach(function(done) {
-      exec("knex migrate:rollback --env testing", function(err, stdout, stderr) {
-          exec("knex migrate:latest --env testing", function(err, stdout, stderr) {
+describe('Database Module Test', () => {
+  beforeEach((done) => {
+      exec("knex migrate:rollback --env testing", (err, stdout, stderr) => {
+          exec("knex migrate:latest --env testing", (err, stdout, stderr) => {
               done();
           });
       });
   });
 
-  describe('userController', function() {
-    describe('post -> /create', function() {
+  describe('userController', () => {
+    describe('post -> /create', () => {
       it('A user should be created', (done) => {
           database.registerUser(testUserRequest, (callBack) => {
               User.where('NAME', testUserRequest.body.username)
