@@ -16,7 +16,7 @@ app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
-app.use(express.static(path.join(__dirname, '../../MyRentalWeb/build')));
+app.use(express.static(path.join(__dirname, '../../TerraWeb/build')));
 
 app.use('/users', userController);
 
@@ -28,7 +28,7 @@ app.use((error, request, response, next) => {
 });
 
 app.get('*', (req, res,next) => {
-    res.sendFile(path.join(__dirname, '../../MyRentalWeb/build') +
+    res.sendFile(path.join(__dirname, '../../TerraWeb/build') +
     '/index.html');
 });
 
