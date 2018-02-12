@@ -19,5 +19,7 @@
             "charset": "utf8",
             "host": ""
         }
-    }
+    },
+
+    "log_address" : "/logs/Error.log"
 }

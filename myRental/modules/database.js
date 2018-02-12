@@ -4,9 +4,13 @@ let fs = require('fs');
 let mysql = require("mysql");
 let bcrypt = require('bcryptjs');
 
+let Logger = require('./Log.js');
+
 let User = null;
+let logger = null;
 
 function dataBaseModule(type) {
+    logger = new Logger();
     if(type === "test") {
         User = require('../models/User').UserTest;
     } else {
@@ -29,7 +33,7 @@ method.registerUser = (request, callBack) => {
             });
         })
         .catch(function (err) {
-            console.log(err);
+            logger.log(err);
             return callBack ({
                 success: false,
             });
