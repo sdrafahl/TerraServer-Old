@@ -1,6 +1,4 @@
 let express = require('express');
-var session = require('express-session');
-var RedisStore = require('connect-redis')(session);
 
 let DataBase = require('../modules/database.js');
 let config = require('../config.json');
