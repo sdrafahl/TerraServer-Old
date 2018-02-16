@@ -21,5 +21,21 @@
         }
     },
 
-    "log_address" : "/logs/Error.log"
+    "log_address" : "/logs/Error.log",
+    "redis" : {
+        "store_data": {
+            "host": "127.0.0.1",
+            "port": 4546,
+            "prefix": "sess"
+        },
+        "redis_argument": {
+            "store": {},
+            "secret": "SEKR37",
+            "resave": true,
+            "saveUninitialized": true,
+            "cookie": {
+              "secure": false
+            }
+        }
+    }
 }
