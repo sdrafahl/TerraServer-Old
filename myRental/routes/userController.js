@@ -12,4 +12,8 @@ router.post('/create', (request, response) => {
     });
 });
 
+router.post('/login', (request, response) => {
+    
+});
+
 module.exports = router;

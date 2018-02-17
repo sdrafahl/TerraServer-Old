@@ -3,14 +3,13 @@ let method = dataBaseModule.prototype;
 let fs = require('fs');
 let mysql = require("mysql");
 let bcrypt = require('bcryptjs');
+let crypto = require('crypto');
 
-let Logger = require('./Log.js');
+let config = require('../config.json');
 
 let User = null;
-let logger = null;
 
 function dataBaseModule(type) {
-    logger = new Logger();
     if(type === "test") {
         User = require('../models/User').UserTest;
     } else {
@@ -33,11 +32,24 @@ method.registerUser = (request, callBack) => {
             });
         })
         .catch(function (err) {
-            logger.log(err);
+            console.log(err);
             return callBack ({
                 success: false,
             });
         });
+}
+
+method.login = (request, callBack) => {
+    let usernameOrEmail = request.body.username;
+    let encryptedPassword = request.body.password;
+
+}
+
+function decrypt(encryptedPassword) {
+    let decipher = crypto.createDecipher(config.client_side_encryption.algorithm, config.client_side_encryption.password);
+    let password = decipher.update(encryptedPassword , 'hex', 'utf8')
+    password += decipher.final('utf8');
+    return password;
 }
 
 function hashPassword(password) {

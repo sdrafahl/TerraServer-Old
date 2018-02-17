@@ -37,5 +37,9 @@
               "secure": false
             }
         }
+    },
+    "client_side_encryption" : {
+        "algorithm": "aes-256-ctr",
+        "password": "fjlka094324"
     }
 }
