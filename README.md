@@ -10,14 +10,19 @@ npm build
 
 ```
 
-Run the setup script to load the database schema file. The username is Shane. You will need to setup your own local
-mysql database on your system with that username before running the script.
+Run the setup script to load the database schema file. The username is Shane. You will need to setup your own local mysql database on your system with that username before running the script.
 
 ```
 cd scripts
 
 ./setup.sh
 
+```
+
+Now you need to start the redis database server for the session a directory above the scripts directory.
+
+```
+./scripts/redis.sh -start
 ```
 
 Start the server
