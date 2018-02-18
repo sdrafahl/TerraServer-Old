@@ -41,10 +41,10 @@ describe('Database Module Test', () => {
     });
 
     describe('post -> /login', () => {
-        it('A user should be created and also be able to login', (done) => {
+        it('A user should be created and also be able to login', () => {
             database.registerUser(testUserRequest, (callBack) => {
                 database.login(testUserRequest, (callBack) => {
-                        assert.equal(callBack.success, true);
+                    assert.equal(callBack.success, true);
                 });
             });
         });
