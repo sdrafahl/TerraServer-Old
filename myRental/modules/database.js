@@ -34,7 +34,7 @@ method.registerUser = (request, callBack) => {
             });
         })
         .catch(function (err) {
-            console.log(err);
+            logger.log(err);
             return callBack ({
                 success: false,
             });
