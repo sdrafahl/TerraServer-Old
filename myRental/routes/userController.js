@@ -12,4 +12,10 @@ router.post('/create', (request, response) => {
     });
 });
 
+router.post('/login', (request, response) => {
+    database.login(request, (callBack) => {
+        response.json(callBack);
+    });
+});
+
 module.exports = router;

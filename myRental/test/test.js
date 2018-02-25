@@ -4,6 +4,7 @@ let mysql = require("mysql");
 let fs = require('fs');
 let bcrypt = require('bcryptjs');
 let exec = require('child_process').exec;
+let crypto = require('crypto')
 
 let DataBase = require('../modules/database.js');
 let testUserRequest = require('./testUserRequest.json');
@@ -37,6 +38,16 @@ describe('Database Module Test', () => {
               });
           });
       });
+    });
+
+    describe('post -> /login', () => {
+        it('A user should be created and also be able to login', () => {
+            database.registerUser(testUserRequest, (callBack) => {
+                database.login(testUserRequest, (callBack) => {
+                    assert.equal(callBack.success, true);
+                });
+            });
+        });
     });
   });
 });
