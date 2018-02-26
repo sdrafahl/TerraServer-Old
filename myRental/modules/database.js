@@ -28,6 +28,12 @@ method.registerUser = (request, callBack) => {
     let zip = request.body.zip;
     let state = request.body.state;
 
+    if(!testRegistration(request)) {
+        return callBack ({
+            success: false,
+        });
+    }
+
     let insert = {
         NAME: username,
         PASSWORD: password,
@@ -81,6 +87,17 @@ function decrypt(encryptedPassword) {
 function hashPassword(password) {
     let salt = bcrypt.genSaltSync(10);
     return bcrypt.hashSync(password, salt);
+}
+
+function testRegistration(request) {
+    let regularExpression = /\S+@\S+\.\S+/;
+    let passwordLengthRequirement = 8;
+    let userNameLengthRequirement = 8;
+    let zipCodeLengthRequirement = 5;
+    return regularExpression.test(request.email) &&
+     request.password.length >= passwordLengthRequirement &&
+     request.username.length >= userNameLengthRequirement &&
+     request.zip.toString().length >= zipCodeLengthRequirement;
 }
 
 module.exports = dataBaseModule;
