@@ -23,8 +23,20 @@ method.registerUser = (request, callBack) => {
     let password = hashPassword(request.body.password);
     let email = request.body.email;
     let username = request.body.username;
+    let address = request.body.address;
+    let city = request.body.city;
+    let zip = request.body.zip;
+    let state = request.body.state;
 
-    let insert = {NAME: username, PASSWORD: password, EMAIL: email};
+    let insert = {
+        NAME: username,
+        PASSWORD: password,
+        EMAIL: email,
+        ADDRESS: address,
+        CITY: city,
+        ZIP: zip,
+        STATE: state
+    };
 
     User.forge(insert)
         .save()
