@@ -29,6 +29,7 @@ describe('Database Module Test', () => {
               .fetch()
               .then(function(user) {
                   assert.equal(user.get('NAME'), testUserRequest.body.username);
+                  assert.equal(user.get('CITY'), testUserRequest.body.city);
                   assert.equal(callBack.success, true);
                   done();
               })
