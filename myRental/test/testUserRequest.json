@@ -1,8 +1,8 @@
 {
     "body": {
-        "password":"pass1",
+        "password":"pass1234",
         "email":"test@me.com",
-        "username":"user1",
+        "username":"user1234",
         "address": "123 6th St",
         "state": "FL",
         "zip": 32904,

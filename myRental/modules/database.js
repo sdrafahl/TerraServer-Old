@@ -90,14 +90,15 @@ function hashPassword(password) {
 }
 
 function testRegistration(request) {
+    console.log(request.body.password);
     let regularExpression = /\S+@\S+\.\S+/;
     let passwordLengthRequirement = 8;
     let userNameLengthRequirement = 8;
     let zipCodeLengthRequirement = 5;
-    return regularExpression.test(request.email) &&
-     request.password.length >= passwordLengthRequirement &&
-     request.username.length >= userNameLengthRequirement &&
-     request.zip.toString().length >= zipCodeLengthRequirement;
+    return regularExpression.test(request.body.email) &&
+     request.body.password.length >= passwordLengthRequirement &&
+     request.body.username.length >= userNameLengthRequirement &&
+     request.body.zip.toString().length >= zipCodeLengthRequirement;
 }
 
 module.exports = dataBaseModule;
