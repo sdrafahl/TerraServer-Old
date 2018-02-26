@@ -2,6 +2,10 @@
     "body": {
         "password":"pass1",
         "email":"test@me.com",
-        "username":"user1"
+        "username":"user1",
+        "address": "123 6th St",
+        "state": "FL",
+        "zip": 32904,
+        "city": "Melbourne"
     }
 }
