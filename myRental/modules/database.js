@@ -90,7 +90,6 @@ function hashPassword(password) {
 }
 
 function testRegistration(request) {
-    console.log(request.body.password);
     let regularExpression = /\S+@\S+\.\S+/;
     let passwordLengthRequirement = 8;
     let userNameLengthRequirement = 8;
