@@ -94,10 +94,13 @@ function testRegistration(request) {
     let passwordLengthRequirement = 8;
     let userNameLengthRequirement = 8;
     let zipCodeLengthRequirement = 5;
-    return emailRegularExpression.test(request.body.email) &&
-     request.body.password.length >= passwordLengthRequirement &&
-     request.body.username.length >= userNameLengthRequirement &&
-     request.body.zip.toString().length == zipCodeLengthRequirement;
+
+    let emailMatchesFormat = emailRegularExpression.test(request.body.email);
+    let passwordIsLongEnough = request.body.password.length >= passwordLengthRequirement;
+    let userNameIsLongEnough = request.body.username.length >= userNameLengthRequirement;
+    let zipCodeIsLongEnough = request.body.zip.toString().length == zipCodeLengthRequirement;
+    
+    return emailMatchesFormat && passwordIsLongEnough && userNameIsLongEnough && zipCodeIsLongEnough;
 }
 
 module.exports = dataBaseModule;
