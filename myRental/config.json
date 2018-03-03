@@ -22,6 +22,7 @@
     },
 
     "log_address" : "/logs/Error.log",
+
     "redis" : {
         "store_data": {
             "host": "127.0.0.1",
@@ -38,6 +39,7 @@
             }
         }
     },
+
     "client_side_encryption" : {
         "algorithm": "aes-256-ctr",
         "password": "fjlka094324"

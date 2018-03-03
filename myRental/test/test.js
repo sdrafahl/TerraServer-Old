@@ -4,12 +4,13 @@ let mysql = require("mysql");
 let fs = require('fs');
 let bcrypt = require('bcryptjs');
 let exec = require('child_process').exec;
-let crypto = require('crypto')
+let crypto = require('crypto');
+let faker = require('faker');
 
 let DataBase = require('../modules/database.js');
-let testUserRequest = require('./testUserRequest.json');
 let User = require('../models/User.js').UserTest;
 
+let testUserRequest = generateFakeUserRequest();
 let database = new DataBase("test");
 
 describe('Database Module Test', () => {
@@ -29,10 +30,12 @@ describe('Database Module Test', () => {
               .fetch()
               .then(function(user) {
                   assert.equal(user.get('NAME'), testUserRequest.body.username);
+                  assert.equal(user.get('CITY'), testUserRequest.body.city);
                   assert.equal(callBack.success, true);
                   done();
               })
               .catch((err) => {
+                 console.log(err);
                  assert(false);
                  done();
               });
@@ -51,3 +54,17 @@ describe('Database Module Test', () => {
     });
   });
 });
+
+function generateFakeUserRequest() {
+    return request = {
+        "body": {
+            "password": faker.internet.password(),
+            "email": faker.internet.email(),
+            "username": faker.internet.userName(),
+            "address": faker.address.streetAddress(),
+            "state": faker.address.state(),
+            "zip": faker.address.zipCode(),
+            "city": faker.address.city(),
+        },
+    };
+}
