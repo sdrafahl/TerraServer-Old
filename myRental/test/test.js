@@ -5,7 +5,7 @@ let fs = require('fs');
 let bcrypt = require('bcryptjs');
 let exec = require('child_process').exec;
 let crypto = require('crypto');
-let faker = require:('faker');
+let faker = require('faker');
 
 let DataBase = require('../modules/database.js');
 let User = require('../models/User.js').UserTest;

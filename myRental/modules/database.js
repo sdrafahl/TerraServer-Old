@@ -93,13 +93,15 @@ function testRegistration(request) {
     let emailRegularExpression = /\S+@\S+\.\S+/;
     let passwordLengthRequirement = 8;
     let userNameLengthRequirement = 8;
-    let zipCodeLengthRequirement = 5;
+    let zipCodeLengthRequirementShort = 5;
+    let zipCodeLengthRequirementLong = 10;
 
     let emailMatchesFormat = emailRegularExpression.test(request.body.email);
     let passwordIsLongEnough = request.body.password.length >= passwordLengthRequirement;
     let userNameIsLongEnough = request.body.username.length >= userNameLengthRequirement;
-    let zipCodeIsLongEnough = request.body.zip.toString().length == zipCodeLengthRequirement;
-    
+    let zipCodeIsLongEnough = request.body.zip.toString().length == zipCodeLengthRequirementShort ||
+        request.body.zip.toString().length == zipCodeLengthRequirementLong;
+
     return emailMatchesFormat && passwordIsLongEnough && userNameIsLongEnough && zipCodeIsLongEnough;
 }
 
