@@ -91,18 +91,16 @@ function hashPassword(password) {
 
 function testRegistration(request) {
     let emailRegularExpression = /\S+@\S+\.\S+/;
+    let zipCodeRegularExpression = /(^\d{5}$)|(^\d{5}-\d{4}$)/;
     let passwordLengthRequirement = 8;
     let userNameLengthRequirement = 8;
-    let zipCodeLengthRequirementShort = 5;
-    let zipCodeLengthRequirementLong = 10;
 
     let emailMatchesFormat = emailRegularExpression.test(request.body.email);
     let passwordIsLongEnough = request.body.password.length >= passwordLengthRequirement;
     let userNameIsLongEnough = request.body.username.length >= userNameLengthRequirement;
-    let zipCodeIsLongEnough = request.body.zip.toString().length == zipCodeLengthRequirementShort ||
-        request.body.zip.toString().length == zipCodeLengthRequirementLong;
+    let zipCodeMatchesFormat = zipCodeRegularExpression.test(request.body.zip.toString());
 
-    return emailMatchesFormat && passwordIsLongEnough && userNameIsLongEnough && zipCodeIsLongEnough;
+    return emailMatchesFormat && passwordIsLongEnough && userNameIsLongEnough && zipCodeMatchesFormat;
 }
 
 module.exports = dataBaseModule;
