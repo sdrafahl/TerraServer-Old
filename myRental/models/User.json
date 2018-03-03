@@ -1,0 +1,4 @@
+{
+    "tableName": "USERS",
+    "duplicates": ["NAME", "EMAIL"]
+}

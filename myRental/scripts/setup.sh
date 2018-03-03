@@ -9,6 +9,8 @@ npm install mysql
 npm install bcrypt
 npm install bcryptjs
 npm install redis-session
+npm install faker
+npm install clrlog
 npm install
 echo "Setting up Databases"
 echo "Enter your MySQL root password"

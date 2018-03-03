@@ -23,8 +23,26 @@ method.registerUser = (request, callBack) => {
     let password = hashPassword(request.body.password);
     let email = request.body.email;
     let username = request.body.username;
+    let address = request.body.address;
+    let city = request.body.city;
+    let zip = request.body.zip;
+    let state = request.body.state;
 
-    let insert = {NAME: username, PASSWORD: password, EMAIL: email};
+    if(!testRegistration(request)) {
+        return callBack ({
+            success: false,
+        });
+    }
+
+    let insert = {
+        NAME: username,
+        PASSWORD: password,
+        EMAIL: email,
+        ADDRESS: address,
+        CITY: city,
+        ZIP: zip,
+        STATE: state
+    };
 
     User.forge(insert)
         .save()
@@ -69,6 +87,20 @@ function decrypt(encryptedPassword) {
 function hashPassword(password) {
     let salt = bcrypt.genSaltSync(10);
     return bcrypt.hashSync(password, salt);
+}
+
+function testRegistration(request) {
+    let emailRegularExpression = /\S+@\S+\.\S+/;
+    let zipCodeRegularExpression = /(^\d{5}$)|(^\d{5}-\d{4}$)/;
+    let passwordLengthRequirement = 8;
+    let userNameLengthRequirement = 8;
+
+    let emailMatchesFormat = emailRegularExpression.test(request.body.email);
+    let passwordIsLongEnough = request.body.password.length >= passwordLengthRequirement;
+    let userNameIsLongEnough = request.body.username.length >= userNameLengthRequirement;
+    let zipCodeMatchesFormat = zipCodeRegularExpression.test(request.body.zip.toString());
+
+    return emailMatchesFormat && passwordIsLongEnough && userNameIsLongEnough && zipCodeMatchesFormat;
 }
 
 module.exports = dataBaseModule;
