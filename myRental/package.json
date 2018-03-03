@@ -7,15 +7,17 @@
     "test": "mocha --exit"
   },
   "dependencies": {
+    "bcrypt": "^1.0.3",
     "bcryptjs": "^2.4.3",
     "body-parser": "~1.15.2",
     "bookshelf": "^0.12.1",
     "bookshelf-check-duplicates": "^0.2.2",
+    "clrlog": "^1.6.0",
     "connect-redis": "^3.3.3",
     "cookie-parser": "~1.4.3",
     "debug": "~2.2.0",
     "ejs": "~2.5.2",
-    "express": "^4.14.1",
+    "express": "^4.16.2",
     "express-session": "^1.15.6",
     "knex": "^0.13.0",
     "mock-express": "^1.2.0",
