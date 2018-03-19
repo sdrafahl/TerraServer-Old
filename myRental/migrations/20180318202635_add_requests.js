@@ -4,8 +4,7 @@ exports.up = function(knex, Promise) {
         table.jsonb('JSON_REQUEST');
         table.date('CREATED');
         table.string('STATE_OF_REQUEST');
-        table.integer('REQUESTER_ID');
-        table.integer('REQUESTIE_ID');
+        table.string('ADDRESS');
     });
 };
 
