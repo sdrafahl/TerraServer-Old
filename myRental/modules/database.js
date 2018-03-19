@@ -13,9 +13,9 @@ let User = null;
 
 function dataBaseModule(type) {
     if(type === "test") {
-        User = require('../models/User').UserTest;
+        User = require('../models/models').UserTest;
     } else {
-        User = require('../models/User').User;
+        User = require('../models/models').User;
     }
 };
 
@@ -68,6 +68,7 @@ method.login = (request, callBack) => {
     }).fetch()
       .then((user) => {
         request.session.loggedIn = true;
+        request.session.userId = user.
         return callBack ({success: true});
     }).catch((err) => {
         return callBack ({
@@ -78,7 +79,7 @@ method.login = (request, callBack) => {
 
 method.handleRequest = (request, callBack) => {
     if(request.session.loggedIn) {
-        
+
     } else {
         return callBack ({
             success: false,
