@@ -10,12 +10,16 @@ let Log = require('./Log.js');
 
 let logger = new Log();
 let User = null;
+let Request = null;
 
 function dataBaseModule(type) {
+    let models = require('../models/models');
     if(type === "test") {
-        User = require('../models/models').UserTest;
+        User = models.UserTest;
+        Request = models.RequestTest;
     } else {
-        User = require('../models/models').User;
+        User = models.User;
+        Request = models.Request;
     }
 };
 
