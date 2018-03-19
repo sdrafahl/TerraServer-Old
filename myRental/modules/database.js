@@ -77,7 +77,14 @@ method.login = (request, callBack) => {
 }
 
 method.handleRequest = (request, callBack) => {
-
+    if(request.session.loggedIn) {
+        
+    } else {
+        return callBack ({
+            success: false,
+            message: 'Cannot Make Request When Not Logged In'
+        });
+    }
 }
 
 function decrypt(encryptedPassword) {
