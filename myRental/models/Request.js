@@ -1,11 +1,11 @@
 let bookshelf = require('../modules/bookshelfConfig.js').bookshelf;
 let bookshelfTest = require('../modules/bookshelfConfig.js').bookshelfTest;
-let userSpecification = require('./User.json');
+let requestSpecification = require('./Request.json');
 
-let User = bookshelf.Model.extend (userSpecification);
-let UserTest = bookshelfTest.Model.extend (userSpecification);
+let Request = bookshelf.Model.extend (requestSpecification);
+let RequestTest = bookshelfTest.Model.extend (requestSpecification);
 
 module.exports = {
-	User: User,
-    UserTest: UserTest,
+	Request: Request,
+    RequestTest: RequestTest,
 };

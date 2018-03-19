@@ -76,6 +76,10 @@ method.login = (request, callBack) => {
     });
 }
 
+method.handleRequest = (request, callBack) => {
+
+}
+
 function decrypt(encryptedPassword) {
     let decipher = crypto.createDecipher(config.client_side_encryption.algorithm,
         config.client_side_encryption.password);

@@ -18,4 +18,10 @@ router.post('/login', (request, response) => {
     });
 });
 
+router.post('/handleRequest', (request, response) => {
+    database.handleRequest(request, (callBack) => {
+        response.json(callBack);
+    });
+});
+
 module.exports = router;
