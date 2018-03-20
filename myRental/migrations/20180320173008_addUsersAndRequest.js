@@ -1,5 +1,4 @@
 exports.up = function(knex, Promise) {
-    knex.schema.dropTable('USERS');
     return knex.schema.createTableIfNotExists('REQUESTS', (table) => {
         table.increments('id').primary();
         table.json('JSON_REQUEST');
