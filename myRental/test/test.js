@@ -8,9 +8,11 @@ let crypto = require('crypto');
 let faker = require('faker');
 
 let DataBase = require('../modules/database.js');
-let User = require('../models/User.js').UserTest;
+let User = require('../models/models.js').UserTest;
+let Request = require('../models/models.js').RequestTest;
 
 let testUserRequest = generateFakeUserRequest();
+let testServiceRequest0 = generateFakeServiceRequest(0);
 let database = new DataBase("test");
 
 describe('Database Module Test', () => {
@@ -59,8 +61,18 @@ describe('Database Module Test', () => {
 describe('requestController', () => {
 
     describe('post -> /handleRequest', () => {
-        it('A request should be saved and associated to a user', (done) => {
-            database.handleRequest()
+        it('A request should be saved and associated to a user', () => {
+            database.registerUser(testUserRequest, (callBack) => {
+                database.handleRequest(testServiceRequest0), (callBack) => {
+                    User.where('id', 1).fetch({
+                        'withRelated': ['REQUESTS']
+                    }).then((user) => {
+                        let request = user.related('REQUESTS');
+                        let jsonRequest = JSON.parse(JSON.stringify(request.('JSON_REQUEST').buffer.toString()));
+                        assert.equal(jsonRequest.lawnCare.height, testServiceRequest0.body.serviceRequest.lawnCare.height)
+                    });
+                });
+            }
         });
     });
 });
@@ -76,6 +88,9 @@ function generateFakeUserRequest() {
             'zip': faker.address.zipCode(),
             'city': faker.address.city(),
         },
+        'session': {
+            'loggedIn': false,
+        },
     };
 }
 
@@ -84,7 +99,7 @@ function generateFakeServiceRequest(indexOfTest) {
     switch(indexOfTest % 3) {
         case 0:
             serviceRequest = {
-                'LawnCare': {
+                'lawnCare': {
                     'height': faker.random.number(),
                     'pattern': "stripe",
                     'fertilize': false,
@@ -105,5 +120,9 @@ function generateFakeServiceRequest(indexOfTest) {
             'zip': faker.address.zipCode(),
             'city': faker.address.city(),
         }
+        'session': {
+            'loggedIn': true,
+            'userId': 1,
+        },
     }
 }

@@ -20,7 +20,7 @@ exports.up = function(knex, Promise) {
         table.string('STATE');
     }).createTable('USERS_REQUESTS', (table) => {
         table.integer('USERS_id').references('USERS.id');
-        table.integer('REQUESTS_id').references('books.id');
+        table.integer('REQUESTS_id').references('REQUESTS.id');
     });
 };
 
