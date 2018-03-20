@@ -47,7 +47,6 @@ method.registerUser = (request, callBack) => {
         ZIP: zip,
         STATE: state
     };
-
     User.forge(insert)
         .save()
         .then((user) => {
@@ -95,7 +94,7 @@ method.handleRequest = (request, callBack) => {
         let zip = request.body.zip;
         let state = request.body.state;
 
-        let currentDate = new Date(year, month, day, hour, minute, second, millisecond);
+        let currentDate = new Date();
 
         let insert = {
             JSON_REQUEST: binaryServiceRequest,

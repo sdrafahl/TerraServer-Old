@@ -6,7 +6,7 @@ exports.up = function(knex, Promise) {
         table.string('STATE_OF_REQUEST');
         table.string('ADDRESS');
         table.string('CITY');
-        table.integer('ZIP');
+        table.string('ZIP', 30);
         table.string('STATE');
     }).createTable('USERS', (table) => {
         table.increments('id').primary();
@@ -15,11 +15,11 @@ exports.up = function(knex, Promise) {
         table.string('EMAIL');
         table.string('ADDRESS');
         table.string('CITY');
-        table.integer('ZIP');
+        table.string('ZIP', 30);
         table.string('STATE');
     }).createTable('USERS_REQUESTS', (table) => {
-        table.integer('USERS_id').references('USERS.id');
-        table.integer('REQUESTS_id').references('REQUESTS.id');
+        table.integer('USERS_id').unsigned().references('USERS.id');
+        table.integer('REQUESTS_id').unsigned().references('REQUESTS.id');
     });
 };
 

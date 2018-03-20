@@ -13,7 +13,6 @@ let User = require('../models/models.js').UserTest;
 let Request = require('../models/models.js').RequestTest;
 
 let testUserRequest = generateFakeUserRequest();
-let testServiceRequest0 = generateFakeServiceRequest(0);
 let database = new DataBase("test");
 let logger = new Log();
 
@@ -31,6 +30,8 @@ describe('Database Module Test', () => {
     describe('post -> /create', () => {
       it('A user should be created', (done) => {
           database.registerUser(testUserRequest, (callBack) => {
+              logger.log(callBack);
+              logger.log(testUserRequest);
               User.where('NAME', testUserRequest.body.username)
               .fetch()
               .then(function(user) {
@@ -48,6 +49,8 @@ describe('Database Module Test', () => {
       });
     });
 
+    testUserRequest = generateFakeUserRequest();
+
     describe('post -> /login', () => {
         it('A user should be created and also be able to login', () => {
             database.registerUser(testUserRequest, (callBack) => {
@@ -59,6 +62,9 @@ describe('Database Module Test', () => {
     });
   });
 });
+
+testUserRequest = generateFakeUserRequest();
+let testServiceRequest0 = generateFakeServiceRequest(0);
 
 describe('requestController', () => {
 
