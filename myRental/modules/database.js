@@ -83,7 +83,29 @@ method.login = (request, callBack) => {
 
 method.handleRequest = (request, callBack) => {
     if(request.session.loggedIn) {
+        let binaryServiceRequest = Buffer.from(JSON.stringify(request.body.serviceRequest));
+        let address = request.body.serviceRequest;
+        let currentDate = new Date(year, month, day, hour, minute, second, millisecond);
 
+        let insert = {
+            JSON_REQUEST: binaryServiceRequest,
+            CREATED: currentDate,
+            STATE_OF_REQUEST: 'Not Processed',
+            ADDRESS: address,
+        }
+
+        Request.forge(insert)
+            .save()
+            .then((serviceRequestResponse) => {
+                serviceRequestResponse.users().attach(request.session.userId);
+                return callBack ({
+                    success: true,
+                });
+            }).catch((error) => {
+                return callBack ({
+                    success: false,
+                });
+            });
     } else {
         return callBack ({
             success: false,

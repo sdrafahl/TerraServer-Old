@@ -4,14 +4,14 @@ let bookshelfTest = require('../modules/bookshelfConfig.js').bookshelfTest;
 let userSpecification = {
     tableName: "USERS",
     duplicates: ["NAME", "EMAIL"],
-	pages: function() {
+	requests: function() {
 		return this.belongsToMany(Request);
 	},
 }
 
 let requestSpecification = {
     tableName: "REQUESTS",
-	pages: function() {
+	users: function() {
 		return this.belongsToMany(User);
 	},
 }
