@@ -23,6 +23,7 @@ describe('Database Module Test', () => {
   });
 
   describe('userController', () => {
+
     describe('post -> /create', () => {
       it('A user should be created', (done) => {
           database.registerUser(testUserRequest, (callBack) => {
@@ -55,16 +56,54 @@ describe('Database Module Test', () => {
   });
 });
 
+describe('requestController', () => {
+
+    describe('post -> /handleRequest', () => {
+        it('A request should be saved and associated to a user', (done) => {
+            database.handleRequest()
+        });
+    });
+});
+
 function generateFakeUserRequest() {
-    return request = {
-        "body": {
-            "password": faker.internet.password(),
-            "email": faker.internet.email(),
-            "username": faker.internet.userName(),
-            "address": faker.address.streetAddress(),
-            "state": faker.address.state(),
-            "zip": faker.address.zipCode(),
-            "city": faker.address.city(),
+    return {
+        'body': {
+            'password': faker.internet.password(),
+            'email': faker.internet.email(),
+            'username': faker.internet.userName(),
+            'address': faker.address.streetAddress(),
+            'state': faker.address.state(),
+            'zip': faker.address.zipCode(),
+            'city': faker.address.city(),
         },
     };
+}
+
+function generateFakeServiceRequest(indexOfTest) {
+    let serviceRequest = null;
+    switch(indexOfTest % 3) {
+        case 0:
+            serviceRequest = {
+                'LawnCare': {
+                    'height': faker.random.number(),
+                    'pattern': "stripe",
+                    'fertilize': false,
+                    'water': false,
+                    'seeds': false,
+                    'removeWeeds': false,
+                    'misc': "",
+                }
+            };
+            break;
+    }
+
+    return {
+        'body': {
+            'serviceRequest': serviceRequest,
+            'address': faker.address.streetAddress(),
+            'state': faker.address.state(),
+            'zip': faker.address.zipCode(),
+            'city': faker.address.city(),
+        }
+    }
 }

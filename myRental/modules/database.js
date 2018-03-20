@@ -84,7 +84,11 @@ method.login = (request, callBack) => {
 method.handleRequest = (request, callBack) => {
     if(request.session.loggedIn) {
         let binaryServiceRequest = Buffer.from(JSON.stringify(request.body.serviceRequest));
-        let address = request.body.serviceRequest;
+        let address = request.body.address;
+        let city = request.body.city;
+        let zip = request.body.zip;
+        let state = request.body.state.
+
         let currentDate = new Date(year, month, day, hour, minute, second, millisecond);
 
         let insert = {
@@ -92,6 +96,9 @@ method.handleRequest = (request, callBack) => {
             CREATED: currentDate,
             STATE_OF_REQUEST: 'Not Processed',
             ADDRESS: address,
+            CITY: city,
+            ZIP: zip,
+            STATE: state,
         }
 
         Request.forge(insert)
