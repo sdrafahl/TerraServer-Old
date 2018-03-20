@@ -11,3 +11,11 @@ Sun Feb 18 2018 15:02:52 GMT-0600 (CST) - LOG::: | ERROR ᑀ {}
 Sun Feb 18 2018 15:11:58 GMT-0600 (CST) - LOG::: | ERROR ᑀ {}
 Sun Feb 18 2018 15:20:56 GMT-0600 (CST) - LOG::: | ERROR ᑀ {}
 Sun Feb 18 2018 15:22:07 GMT-0600 (CST) - LOG::: | ERROR ᑀ {}
+Tue Mar 20 2018 12:53:35 GMT-0500 (CDT) - LOG::: | ERROR ᑀ {
+	"code": "ER_NO_SUCH_TABLE",
+	"errno": 1146,
+	"sqlMessage": "Table 'TERRA_TEST.USERS' doesn't exist",
+	"sqlState": "42S02",
+	"index": 0,
+	"sql": "select count(*) as `count` from `USERS` where `EMAIL` = 'Royce98@yahoo.com' limit 1"
+}

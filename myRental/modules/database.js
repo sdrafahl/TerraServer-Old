@@ -71,9 +71,15 @@ method.login = (request, callBack) => {
         qb.where('NAME', usernameOrEmail).orWhere('EMAIL', usernameOrEmail);
     }).fetch()
       .then((user) => {
-        request.session.loggedIn = true;
-        request.session.userId = user.
-        return callBack ({success: true});
+        bcrypt.compare(password, user.get('PASSWORD'), (error, response) => {
+            if(response) {
+                request.session.loggedIn = true;
+                request.session.userId = user.get('id');
+                return callBack ({success: true});
+            } else {
+                return callBack ({success: false});
+            }
+        });
     }).catch((err) => {
         return callBack ({
             success: false,
@@ -87,7 +93,7 @@ method.handleRequest = (request, callBack) => {
         let address = request.body.address;
         let city = request.body.city;
         let zip = request.body.zip;
-        let state = request.body.state.
+        let state = request.body.state;
 
         let currentDate = new Date(year, month, day, hour, minute, second, millisecond);
 
