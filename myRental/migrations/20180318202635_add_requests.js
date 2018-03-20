@@ -2,7 +2,7 @@ exports.up = function(knex, Promise) {
     knex.schema.dropTable('USERS');
     return knex.schema.createTableIfNotExists('REQUESTS', (table) => {
         table.increments('id').primary();
-        table.jsonb('JSON_REQUEST');
+        table.json('JSON_REQUEST');
         table.date('CREATED');
         table.string('STATE_OF_REQUEST');
         table.string('ADDRESS');
@@ -25,7 +25,8 @@ exports.up = function(knex, Promise) {
 };
 
 exports.down = function(knex, Promise) {
-    return knex.schema.dropTable('REQUESTS');
+    return knex.schema
+        .dropTable('REQUESTS')
         .dropTable('USERS')
         .dropTable('USERS_REQUESTS');
 };

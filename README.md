@@ -47,12 +47,20 @@ knex migrate:latest
 
 ```
 
+To roll back the migrations
+
+```
+knex migrate:rollback
+
+```
+
 To create a migration
 
 ```
 knex migrate:make setup
 
 ```
+
 
 ## Testing
 
