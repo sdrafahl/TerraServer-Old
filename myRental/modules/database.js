@@ -55,7 +55,7 @@ method.registerUser = (request, callBack) => {
             });
         })
         .catch(function (err) {
-            logger.log(err);
+            //logger.log(err);
             return callBack ({
                 success: false,
             });
@@ -129,7 +129,7 @@ method.handleRequest = (request, callBack) => {
 function decrypt(encryptedPassword) {
     let decipher = crypto.createDecipher(config.client_side_encryption.algorithm,
         config.client_side_encryption.password);
-    let password = decipher.update(encryptedPassword , 'hex', 'utf8')
+    let password = decipher.update(encryptedPassword , 'hex', 'utf8');
     password += decipher.final('utf8');
     return password;
 }

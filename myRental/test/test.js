@@ -11,6 +11,7 @@ let Log = require('../modules/Log.js');
 let DataBase = require('../modules/database.js');
 let User = require('../models/models.js').UserTest;
 let Request = require('../models/models.js').RequestTest;
+let config = require('../config.json');
 
 let testUserRequest = generateFakeUserRequest();
 let database = new DataBase("test");
@@ -30,8 +31,8 @@ describe('Database Module Test', () => {
     describe('post -> /create', () => {
       it('A user should be created', (done) => {
           database.registerUser(testUserRequest, (callBack) => {
-              logger.log(callBack);
-              logger.log(testUserRequest);
+             // logger.log(callBack);
+             // logger.log(testUserRequest);
               User.where('NAME', testUserRequest.body.username)
               .fetch()
               .then(function(user) {
@@ -77,9 +78,8 @@ describe('requestController', () => {
                     }).then((user) => {
                         let request = user.related('REQUESTS');
                         logger.log(request);
-                        //let jsonRequest = JSON.parse(JSON.stringify(request.('JSON_REQUEST').buffer.toString()));
-                        //assert.equal(jsonRequest.lawnCare.height, testServiceRequest0.body.serviceRequest.lawnCare.height)
-                        assert.equal(true, true);
+                        let jsonRequest = JSON.parse(JSON.stringify(request.get('JSON_REQUEST').buffer.toString()));
+                        assert.equal(jsonRequest.lawnCare.height, testServiceRequest0.body.serviceRequest.lawnCare.height);
                     });
                 });
             });
@@ -90,7 +90,7 @@ describe('requestController', () => {
 function generateFakeUserRequest() {
     return {
         'body': {
-            'password': faker.internet.password(),
+            'password': encrypt(faker.internet.password()),
             'email': faker.internet.email(),
             'username': faker.internet.userName(),
             'address': faker.address.streetAddress(),
@@ -135,4 +135,12 @@ function generateFakeServiceRequest(indexOfTest) {
             'userId': 1,
         },
     }
+}
+
+function encrypt(password) {
+    let cipher = crypto.createCipher(config.client_side_encryption.algorithm,
+        config.client_side_encryption.password);
+    let crypted = cipher.update(password, 'utf-8', 'hex');
+        crypted += cipher.final('hex');
+        return crypted;
 }

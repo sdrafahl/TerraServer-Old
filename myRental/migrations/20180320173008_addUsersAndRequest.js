@@ -25,7 +25,7 @@ exports.up = function(knex, Promise) {
 
 exports.down = function(knex, Promise) {
     return knex.schema
+        .dropTable('USERS_REQUESTS')
         .dropTable('REQUESTS')
-        .dropTable('USERS')
-        .dropTable('USERS_REQUESTS');
+        .dropTable('USERS');
 };
