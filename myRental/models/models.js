@@ -2,28 +2,42 @@ let bookshelf = require('../modules/bookshelfConfig.js').bookshelf;
 let bookshelfTest = require('../modules/bookshelfConfig.js').bookshelfTest;
 
 let userSpecification = {
+
+}
+
+let User = bookshelf.Model.extend ({
     tableName: "USERS",
     duplicates: ["NAME", "EMAIL"],
 	requests: function() {
 		return this.belongsToMany(Request);
 	},
-}
+});
 
-let requestSpecification = {
+let UserTest = bookshelfTest.Model.extend ({
+    tableName: "USERS",
+    duplicates: ["NAME", "EMAIL"],
+	requests: function() {
+		return this.belongsToMany(RequestTest);
+	},
+});
+
+let Request = bookshelf.Model.extend ({
     tableName: "REQUESTS",
 	users: function() {
 		return this.belongsToMany(User);
 	},
-}
+});
 
-let User = bookshelf.Model.extend (userSpecification);
-let UserTest = bookshelfTest.Model.extend (userSpecification);
-let Request = bookshelf.Model.extend (requestSpecification);
-let RequestTest = bookshelfTest.Model.extend (requestSpecification);
+let RequestTest = bookshelfTest.Model.extend ({
+    tableName: "REQUESTS",
+	users: function() {
+		return this.belongsToMany(UserTest);
+	},
+});
 
 module.exports = {
-	Request: Request,
+    User: User,
+    UserTest: UserTest,
+    Request: Request,
     RequestTest: RequestTest,
-	User: User,
-	UserTest: UserTest,
 };

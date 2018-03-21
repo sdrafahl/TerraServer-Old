@@ -17,15 +17,15 @@ exports.up = function(knex, Promise) {
         table.string('CITY');
         table.string('ZIP', 30);
         table.string('STATE');
-    }).createTable('USERS_REQUESTS', (table) => {
-        table.integer('USERS_id').unsigned().references('USERS.id');
-        table.integer('REQUESTS_id').unsigned().references('REQUESTS.id');
+    }).createTable('REQUESTS_USERS', (table) => {
+        table.integer('USER_id').unsigned().references('USERS.id');
+        table.integer('REQUEST_id').unsigned().references('REQUESTS.id');
     });
 };
 
 exports.down = function(knex, Promise) {
     return knex.schema
-        .dropTable('USERS_REQUESTS')
+        .dropTable('REQUESTS_USERS')
         .dropTable('REQUESTS')
         .dropTable('USERS');
 };

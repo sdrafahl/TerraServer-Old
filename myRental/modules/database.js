@@ -24,14 +24,13 @@ function dataBaseModule(type) {
 };
 
 method.registerUser = (request, callBack) => {
-    let password = hashPassword(request.body.password);
+    let password = hashPassword(decrypt(request.body.password));
     let email = request.body.email;
     let username = request.body.username;
     let address = request.body.address;
     let city = request.body.city;
     let zip = request.body.zip;
     let state = request.body.state;
-
     if(!testRegistration(request)) {
         return callBack ({
             success: false,
@@ -65,6 +64,7 @@ method.registerUser = (request, callBack) => {
 method.login = (request, callBack) => {
     let usernameOrEmail = request.body.username;
     let encryptedPassword = request.body.password;
+    console.log(request);
     let password = decrypt(encryptedPassword);
     User.query((qb) => {
         qb.where('NAME', usernameOrEmail).orWhere('EMAIL', usernameOrEmail);
@@ -109,15 +109,24 @@ method.handleRequest = (request, callBack) => {
         Request.forge(insert)
             .save()
             .then((serviceRequestResponse) => {
-                serviceRequestResponse.users().attach(request.session.userId);
-                return callBack ({
-                    success: true,
-                });
+                //console.log("Made it here program");
+                //return serviceRequestResponse.users().attach(request.session.userId);
+                User.where({'id': request.session.userId})
+                    .fetch()
+                    .then((mod) => {
+                        mod.requests()
+                        .attach(serviceRequestResponse);
+                        return callBack ({
+                            success: true,
+                        });
+                    });
             }).catch((error) => {
+                console.log("rocks " + error);
                 return callBack ({
                     success: false,
                 });
             });
+
     } else {
         return callBack ({
             success: false,

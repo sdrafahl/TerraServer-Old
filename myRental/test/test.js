@@ -14,6 +14,7 @@ let Request = require('../models/models.js').RequestTest;
 let config = require('../config.json');
 
 let testUserRequest = generateFakeUserRequest();
+let testServiceRequest0 = generateFakeServiceRequest(0);
 let database = new DataBase("test");
 let logger = new Log();
 
@@ -31,8 +32,8 @@ describe('Database Module Test', () => {
     describe('post -> /create', () => {
       it('A user should be created', (done) => {
           database.registerUser(testUserRequest, (callBack) => {
-             // logger.log(callBack);
-             // logger.log(testUserRequest);
+              logger.log(callBack);
+              logger.log(testUserRequest);
               User.where('NAME', testUserRequest.body.username)
               .fetch()
               .then(function(user) {
@@ -50,13 +51,13 @@ describe('Database Module Test', () => {
       });
     });
 
-    testUserRequest = generateFakeUserRequest();
-
     describe('post -> /login', () => {
-        it('A user should be created and also be able to login', () => {
+        it('A user should be created and also be able to login', (done) => {
             database.registerUser(testUserRequest, (callBack) => {
                 database.login(testUserRequest, (callBack) => {
+                    logger.log("results " + JSON.stringify(callBack));
                     assert.equal(callBack.success, true);
+                    done();
                 });
             });
         });
@@ -64,22 +65,27 @@ describe('Database Module Test', () => {
   });
 });
 
-testUserRequest = generateFakeUserRequest();
-let testServiceRequest0 = generateFakeServiceRequest(0);
-
 describe('requestController', () => {
 
     describe('post -> /handleRequest', () => {
-        it('A request should be saved and associated to a user', () => {
+        it('A request should be saved and associated to a user', (done) => {
             database.registerUser(testUserRequest, (callBack) => {
                 database.handleRequest(testServiceRequest0, (callBack) => {
                     User.where('id', 1).fetch ({
-                        'withRelated': ['REQUESTS']
+                        'withRelated': ['REQUEST']
                     }).then((user) => {
                         let request = user.related('REQUESTS');
-                        logger.log(request);
+                        console.log("cat " + request);
                         let jsonRequest = JSON.parse(JSON.stringify(request.get('JSON_REQUEST').buffer.toString()));
+                        console.log("SD " + jsonRequest.lawnCare.height + " " + testServiceRequest0.body.serviceRequest.lawnCare.height);
                         assert.equal(jsonRequest.lawnCare.height, testServiceRequest0.body.serviceRequest.lawnCare.height);
+                        done();
+                    })
+                    .catch((err) => {
+                       console.log("stuff " + err);
+                       logger.log(err);
+                       assert(false);
+                       done();
                     });
                 });
             });
@@ -88,9 +94,10 @@ describe('requestController', () => {
 });
 
 function generateFakeUserRequest() {
+    let fakePass = faker.internet.password();
     return {
         'body': {
-            'password': encrypt(faker.internet.password()),
+            'password': encrypt(fakePass),
             'email': faker.internet.email(),
             'username': faker.internet.userName(),
             'address': faker.address.streetAddress(),
@@ -101,6 +108,7 @@ function generateFakeUserRequest() {
         'session': {
             'loggedIn': false,
         },
+        'realPass': fakePass,
     };
 }
 
