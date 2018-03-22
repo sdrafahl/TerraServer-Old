@@ -105,10 +105,9 @@ function generateFakeUserRequest() {
 }
 
 function generateFakeServiceRequest(indexOfTest) {
-    let serviceRequest = null;
-    switch(indexOfTest % 3) {
-        case 0:
-            serviceRequest = {
+    return {
+        'body': {
+            'serviceRequest': {
                 'lawnCare': {
                     'height': faker.random.number(),
                     'pattern': "stripe",
@@ -118,13 +117,7 @@ function generateFakeServiceRequest(indexOfTest) {
                     'removeWeeds': false,
                     'misc': "",
                 }
-            };
-            break;
-    }
-
-    return {
-        'body': {
-            'serviceRequest': serviceRequest,
+            },
             'address': faker.address.streetAddress(),
             'state': faker.address.state(),
             'zip': faker.address.zipCode(),
