@@ -9,8 +9,8 @@ let faker = require('faker');
 let Log = require('../modules/Log.js');
 
 let DataBase = require('../modules/database.js');
-let User = require('../models/models.js').UserTest;
-let Request = require('../models/models.js').RequestTest;
+let User = require('../models/UsersRequests.js').UserTest;
+let Request = require('../models/UsersRequests.js').RequestTest;
 let config = require('../config.json');
 
 let testUserRequest = generateFakeUserRequest();
@@ -32,8 +32,6 @@ describe('Database Module Test', () => {
     describe('post -> /create', () => {
       it('A user should be created', (done) => {
           database.registerUser(testUserRequest, (callBack) => {
-              logger.log(callBack);
-              logger.log(testUserRequest);
               User.where('NAME', testUserRequest.body.username)
               .fetch()
               .then(function(user) {
@@ -54,7 +52,6 @@ describe('Database Module Test', () => {
         it('A user should be created and also be able to login', (done) => {
             database.registerUser(testUserRequest, (callBack) => {
                 database.login(testUserRequest, (callBack) => {
-                    logger.log("results " + JSON.stringify(callBack));
                     assert.equal(callBack.success, true);
                     done();
                 });
@@ -79,7 +76,6 @@ describe('requestController', () => {
                         done();
                     })
                     .catch((err) => {
-                       logger.log(err);
                        assert(false);
                        done();
                     });

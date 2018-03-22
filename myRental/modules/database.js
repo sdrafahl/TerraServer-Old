@@ -13,7 +13,7 @@ let User = null;
 let Request = null;
 
 function dataBaseModule(type) {
-    let models = require('../models/models');
+    let models = require('../models/UsersRequests.js');
     if(type === "test") {
         User = models.UserTest;
         Request = models.RequestTest;
@@ -54,7 +54,7 @@ method.registerUser = (request, callBack) => {
             });
         })
         .catch(function (err) {
-            //logger.log(err);
+            logger.log(err);
             return callBack ({
                 success: false,
             });
