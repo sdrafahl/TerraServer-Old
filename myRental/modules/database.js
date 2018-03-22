@@ -109,18 +109,14 @@ method.handleRequest = (request, callBack) => {
         Request.forge(insert)
             .save()
             .then((serviceRequestResponse) => {
-                //console.log("Made it here program");
-                //return serviceRequestResponse.users().attach(request.session.userId);
-                User.where({'id': request.session.userId})
-                    .fetch()
-                    .then((mod) => {
-                        mod.requests()
-                        .attach(serviceRequestResponse);
-                        return callBack ({
-                            success: true,
-                        });
-                    });
-            }).catch((error) => {
+                return serviceRequestResponse.users().attach(request.session.userId);
+            })
+            .then(() => {
+                return callBack ({
+                    success: true,
+                });
+            })
+            .catch((error) => {
                 console.log("rocks " + error);
                 return callBack ({
                     success: false,

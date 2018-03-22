@@ -72,12 +72,10 @@ describe('requestController', () => {
             database.registerUser(testUserRequest, (callBack) => {
                 database.handleRequest(testServiceRequest0, (callBack) => {
                     User.where('id', 1).fetch ({
-                        'withRelated': ['REQUEST']
+                        'withRelated': ['requests']
                     }).then((user) => {
-                        let request = user.related('REQUESTS');
-                        console.log("cat " + request);
-                        let jsonRequest = JSON.parse(JSON.stringify(request.get('JSON_REQUEST').buffer.toString()));
-                        console.log("SD " + jsonRequest.lawnCare.height + " " + testServiceRequest0.body.serviceRequest.lawnCare.height);
+                        let request = user.related('requests').toJSON();
+                        let jsonRequest = JSON.parse(request[0].JSON_REQUEST);
                         assert.equal(jsonRequest.lawnCare.height, testServiceRequest0.body.serviceRequest.lawnCare.height);
                         done();
                     })
