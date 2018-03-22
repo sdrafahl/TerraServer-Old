@@ -43,7 +43,6 @@ describe('Database Module Test', () => {
                   done();
               })
               .catch((err) => {
-                 console.log(err);
                  assert(false);
                  done();
               });
@@ -80,7 +79,6 @@ describe('requestController', () => {
                         done();
                     })
                     .catch((err) => {
-                       console.log("stuff " + err);
                        logger.log(err);
                        assert(false);
                        done();

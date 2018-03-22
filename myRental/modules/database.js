@@ -64,7 +64,6 @@ method.registerUser = (request, callBack) => {
 method.login = (request, callBack) => {
     let usernameOrEmail = request.body.username;
     let encryptedPassword = request.body.password;
-    console.log(request);
     let password = decrypt(encryptedPassword);
     User.query((qb) => {
         qb.where('NAME', usernameOrEmail).orWhere('EMAIL', usernameOrEmail);
@@ -117,7 +116,7 @@ method.handleRequest = (request, callBack) => {
                 });
             })
             .catch((error) => {
-                console.log("rocks " + error);
+                logger.log(error);
                 return callBack ({
                     success: false,
                 });
