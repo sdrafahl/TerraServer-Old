@@ -14,7 +14,7 @@ let Request = require('../models/UsersRequests.js').RequestTest;
 let config = require('../config.json');
 
 let testUserRequest = generateFakeUserRequest();
-let testServiceRequest0 = generateFakeServiceRequest(0);
+let testServiceRequest = generateFakeServiceRequest();
 let database = new DataBase("test");
 let logger = new Log();
 
@@ -66,16 +66,17 @@ describe('requestController', () => {
     describe('post -> /handleRequest', () => {
         it('A request should be saved and associated to a user', (done) => {
             database.registerUser(testUserRequest, (callBack) => {
-                database.handleRequest(testServiceRequest0, (callBack) => {
+                database.handleRequest(testServiceRequest, (callBack) => {
                     User.where('id', 1).fetch ({
                         'withRelated': ['requests']
                     }).then((user) => {
                         let request = user.related('requests').toJSON();
                         let jsonRequest = JSON.parse(request[0].JSON_REQUEST);
-                        assert.equal(jsonRequest.lawnCare.height, testServiceRequest0.body.serviceRequest.lawnCare.height);
+                        assert.equal(jsonRequest.lawnCare.height, testServiceRequest.body.serviceRequest.lawnCare.height);
                         done();
                     })
                     .catch((err) => {
+                       console.log(err);
                        assert(false);
                        done();
                     });
@@ -104,7 +105,7 @@ function generateFakeUserRequest() {
     };
 }
 
-function generateFakeServiceRequest(indexOfTest) {
+function generateFakeServiceRequest() {
     return {
         'body': {
             'serviceRequest': {
@@ -132,7 +133,7 @@ function generateFakeServiceRequest(indexOfTest) {
 
 function encrypt(password) {
     let cipher = crypto.createCipher(config.client_side_encryption.algorithm,
-        config.client_side_encryption.password);
+            config.client_side_encryption.password);
     let crypted = cipher.update(password, 'utf-8', 'hex');
         crypted += cipher.final('hex');
         return crypted;

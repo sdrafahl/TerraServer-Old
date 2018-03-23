@@ -1,5 +1,5 @@
 exports.up = function(knex, Promise) {
-    return knex.schema.createTableIfNotExists('REQUESTS', (table) => {
+    return knex.schema.createTable('REQUESTS', (table) => {
         table.increments('id').primary();
         table.json('JSON_REQUEST');
         table.date('CREATED');

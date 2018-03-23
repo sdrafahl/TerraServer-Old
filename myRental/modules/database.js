@@ -9,8 +9,8 @@ let config = require('../config.json');
 let Log = require('./Log.js');
 
 let logger = new Log();
-let User = null;
-let Request = null;
+let User;
+let Request;
 
 function dataBaseModule(type) {
     let models = require('../models/UsersRequests.js');
@@ -87,16 +87,18 @@ method.login = (request, callBack) => {
 
 method.handleRequest = (request, callBack) => {
     if(request.session.loggedIn) {
-        let binaryServiceRequest = Buffer.from(JSON.stringify(request.body.serviceRequest));
-        let address = request.body.address;
-        let city = request.body.city;
-        let zip = request.body.zip;
-        let state = request.body.state;
+        let {
+            address,
+            city,
+            zip,
+            state,
+            serviceRequest,
+        } = request.body;
 
         let currentDate = new Date();
 
         let insert = {
-            JSON_REQUEST: binaryServiceRequest,
+            JSON_REQUEST: Buffer.from(JSON.stringify(serviceRequest)),
             CREATED: currentDate,
             STATE_OF_REQUEST: 'Not Processed',
             ADDRESS: address,
