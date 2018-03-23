@@ -7,6 +7,7 @@ let session = require('express-session');
 let RedisStore = require('connect-redis')(session);
 
 let userController = require('./routes/userController');
+let requestController = require('./routes/requestController');
 let Logger = require('./modules/Log.js');
 let config = require('./config.json');
 
@@ -29,6 +30,7 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, '../../TerraWeb/build')));
 
 app.use('/users', userController);
+app.use('/request', requestController);
 app.use((error, request, response, next) => {
     response.locals.message = error.message;
     response.locals.error = request.app.get('env') === 'development' ? error : {};

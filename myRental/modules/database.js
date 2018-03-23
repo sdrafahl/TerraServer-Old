@@ -9,25 +9,28 @@ let config = require('../config.json');
 let Log = require('./Log.js');
 
 let logger = new Log();
-let User = null;
+let User;
+let Request;
 
 function dataBaseModule(type) {
+    let models = require('../models/UsersRequests.js');
     if(type === "test") {
-        User = require('../models/User').UserTest;
+        User = models.UserTest;
+        Request = models.RequestTest;
     } else {
-        User = require('../models/User').User;
+        User = models.User;
+        Request = models.Request;
     }
 };
 
 method.registerUser = (request, callBack) => {
-    let password = hashPassword(request.body.password);
+    let password = hashPassword(decrypt(request.body.password));
     let email = request.body.email;
     let username = request.body.username;
     let address = request.body.address;
     let city = request.body.city;
     let zip = request.body.zip;
     let state = request.body.state;
-
     if(!testRegistration(request)) {
         return callBack ({
             success: false,
@@ -43,7 +46,6 @@ method.registerUser = (request, callBack) => {
         ZIP: zip,
         STATE: state
     };
-
     User.forge(insert)
         .save()
         .then((user) => {
@@ -67,8 +69,15 @@ method.login = (request, callBack) => {
         qb.where('NAME', usernameOrEmail).orWhere('EMAIL', usernameOrEmail);
     }).fetch()
       .then((user) => {
-        request.session.loggedIn = true;
-        return callBack ({success: true});
+        bcrypt.compare(password, user.get('PASSWORD'), (error, response) => {
+            if(response) {
+                request.session.loggedIn = true;
+                request.session.userId = user.get('id');
+                return callBack ({success: true});
+            } else {
+                return callBack ({success: false});
+            }
+        });
     }).catch((err) => {
         return callBack ({
             success: false,
@@ -76,10 +85,57 @@ method.login = (request, callBack) => {
     });
 }
 
+method.handleRequest = (request, callBack) => {
+    if(request.session.loggedIn) {
+        let {
+            address,
+            city,
+            zip,
+            state,
+            serviceRequest,
+        } = request.body;
+
+        let currentDate = new Date();
+
+        let insert = {
+            JSON_REQUEST: Buffer.from(JSON.stringify(serviceRequest)),
+            CREATED: currentDate,
+            STATE_OF_REQUEST: 'Not Processed',
+            ADDRESS: address,
+            CITY: city,
+            ZIP: zip,
+            STATE: state,
+        }
+
+        Request.forge(insert)
+            .save()
+            .then((serviceRequestResponse) => {
+                return serviceRequestResponse.users().attach(request.session.userId);
+            })
+            .then(() => {
+                return callBack ({
+                    success: true,
+                });
+            })
+            .catch((error) => {
+                logger.log(error);
+                return callBack ({
+                    success: false,
+                });
+            });
+
+    } else {
+        return callBack ({
+            success: false,
+            message: 'Cannot Make Request When Not Logged In'
+        });
+    }
+}
+
 function decrypt(encryptedPassword) {
     let decipher = crypto.createDecipher(config.client_side_encryption.algorithm,
         config.client_side_encryption.password);
-    let password = decipher.update(encryptedPassword , 'hex', 'utf8')
+    let password = decipher.update(encryptedPassword , 'hex', 'utf8');
     password += decipher.final('utf8');
     return password;
 }
