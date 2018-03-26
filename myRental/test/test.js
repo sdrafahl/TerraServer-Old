@@ -73,6 +73,8 @@ describe('requestController', () => {
                         let request = user.related('requests').toJSON();
                         let jsonRequest = JSON.parse(request[0].JSON_REQUEST);
                         assert.equal(jsonRequest.lawnCare.height, testServiceRequest.body.serviceRequest.lawnCare.height);
+                        console.log(request[0].price);
+                        assert.equal(request[0].price, testServiceRequest.body.serviceRequest.price);
                         done();
                     })
                     .catch((err) => {
@@ -123,6 +125,7 @@ function generateFakeServiceRequest() {
             'state': faker.address.state(),
             'zip': faker.address.zipCode(),
             'city': faker.address.city(),
+            'price': faker.random.number(),
         },
         'session': {
             'loggedIn': true,
