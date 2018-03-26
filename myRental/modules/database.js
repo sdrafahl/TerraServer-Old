@@ -93,6 +93,7 @@ method.handleRequest = (request, callBack) => {
             zip,
             state,
             serviceRequest,
+            price,
         } = request.body;
 
         let currentDate = new Date();
@@ -105,6 +106,7 @@ method.handleRequest = (request, callBack) => {
             CITY: city,
             ZIP: zip,
             STATE: state,
+            PRICE: price,
         }
 
         Request.forge(insert)

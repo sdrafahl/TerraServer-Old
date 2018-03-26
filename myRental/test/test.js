@@ -123,6 +123,7 @@ function generateFakeServiceRequest() {
             'state': faker.address.state(),
             'zip': faker.address.zipCode(),
             'city': faker.address.city(),
+            'price': faker.random.number(),
         },
         'session': {
             'loggedIn': true,
