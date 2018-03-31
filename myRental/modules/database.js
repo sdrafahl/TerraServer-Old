@@ -68,7 +68,6 @@ method.registerUser = (request, callBack) => {
 }
 
 method.login = (request, callBack) => {
-
     let {
         username,
         password,
