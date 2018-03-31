@@ -24,13 +24,18 @@ function dataBaseModule(type) {
 };
 
 method.registerUser = (request, callBack) => {
-    let password = hashPassword(decrypt(request.body.password));
-    let email = request.body.email;
-    let username = request.body.username;
-    let address = request.body.address;
-    let city = request.body.city;
-    let zip = request.body.zip;
-    let state = request.body.state;
+    let {
+        email,
+        username,
+        address,
+        city,
+        zip,
+        state,
+        password,
+    } = request.body;
+
+    password = hashPassword(decrypt(password));
+
     if(!testRegistration(request)) {
         return callBack ({
             success: false,
@@ -46,6 +51,7 @@ method.registerUser = (request, callBack) => {
         ZIP: zip,
         STATE: state
     };
+
     User.forge(insert)
         .save()
         .then((user) => {
@@ -62,11 +68,14 @@ method.registerUser = (request, callBack) => {
 }
 
 method.login = (request, callBack) => {
-    let usernameOrEmail = request.body.username;
-    let encryptedPassword = request.body.password;
-    let password = decrypt(encryptedPassword);
+    let {
+        username,
+        password,
+    } = request.body;
+    password = decrypt(password);
+
     User.query((qb) => {
-        qb.where('NAME', usernameOrEmail).orWhere('EMAIL', usernameOrEmail);
+        qb.where('NAME', username).orWhere('EMAIL', username);
     }).fetch()
       .then((user) => {
         bcrypt.compare(password, user.get('PASSWORD'), (error, response) => {

@@ -13,8 +13,6 @@ let User = require('../models/UsersRequests.js').UserTest;
 let Request = require('../models/UsersRequests.js').RequestTest;
 let config = require('../config.json');
 
-let testUserRequest = generateFakeUserRequest();
-let testServiceRequest = generateFakeServiceRequest();
 let database = new DataBase("test");
 let logger = new Log();
 
@@ -31,6 +29,7 @@ describe('Database Module Test', () => {
 
     describe('post -> /create', () => {
       it('A user should be created', (done) => {
+          let testUserRequest = generateFakeUserRequest();
           database.registerUser(testUserRequest, (callBack) => {
               User.where('NAME', testUserRequest.body.username)
               .fetch()
@@ -50,6 +49,7 @@ describe('Database Module Test', () => {
 
     describe('post -> /login', () => {
         it('A user should be created and also be able to login', (done) => {
+            let testUserRequest = generateFakeUserRequest();
             database.registerUser(testUserRequest, (callBack) => {
                 database.login(testUserRequest, (callBack) => {
                     assert.equal(callBack.success, true);
@@ -61,12 +61,16 @@ describe('Database Module Test', () => {
   });
 });
 
+
+
 describe('requestController', () => {
 
     describe('post -> /handleRequest', () => {
         it('A request should be saved and associated to a user', (done) => {
+            let testUserRequest = generateFakeUserRequest();
+            let testServiceRequest = generateFakeServiceRequest();
             database.registerUser(testUserRequest, (callBack) => {
-                database.handleRequest(testServiceRequest, (callBack) => {
+                database.handleRequest(testServiceRequest ,(callBack) => {
                     User.where('id', 1).fetch ({
                         'withRelated': ['requests']
                     }).then((user) => {
@@ -77,7 +81,6 @@ describe('requestController', () => {
                         done();
                     })
                     .catch((err) => {
-                       console.log(err);
                        assert(false);
                        done();
                     });
