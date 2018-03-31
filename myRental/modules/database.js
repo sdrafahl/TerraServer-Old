@@ -68,11 +68,15 @@ method.registerUser = (request, callBack) => {
 }
 
 method.login = (request, callBack) => {
-    let usernameOrEmail = request.body.username;
-    let encryptedPassword = request.body.password;
-    let password = decrypt(encryptedPassword);
+
+    let {
+        username,
+        password,
+    } = request.body;
+    password = decrypt(password);
+
     User.query((qb) => {
-        qb.where('NAME', usernameOrEmail).orWhere('EMAIL', usernameOrEmail);
+        qb.where('NAME', username).orWhere('EMAIL', username);
     }).fetch()
       .then((user) => {
         bcrypt.compare(password, user.get('PASSWORD'), (error, response) => {
