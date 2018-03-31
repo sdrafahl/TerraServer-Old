@@ -24,13 +24,18 @@ function dataBaseModule(type) {
 };
 
 method.registerUser = (request, callBack) => {
-    let password = hashPassword(decrypt(request.body.password));
-    let email = request.body.email;
-    let username = request.body.username;
-    let address = request.body.address;
-    let city = request.body.city;
-    let zip = request.body.zip;
-    let state = request.body.state;
+    let {
+        email,
+        username,
+        address,
+        city,
+        zip,
+        state,
+        password,
+    } = request.body;
+
+    password = hashPassword(decrypt(password));
+
     if(!testRegistration(request)) {
         return callBack ({
             success: false,
@@ -46,6 +51,7 @@ method.registerUser = (request, callBack) => {
         ZIP: zip,
         STATE: state
     };
+
     User.forge(insert)
         .save()
         .then((user) => {

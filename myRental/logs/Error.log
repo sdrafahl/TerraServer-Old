@@ -1,0 +1,48 @@
+Sat Mar 31 2018 12:07:17 GMT-0500 (CDT) - LOG::: | ERROR ᑀ {
+	"name": "DupplicateError",
+	"message": "DuplicateError: NAME",
+	"field": "NAME"
+}
+Sat Mar 31 2018 12:10:57 GMT-0500 (CDT) - LOG::: | ERROR ᑀ {
+	"name": "DupplicateError",
+	"message": "DuplicateError: NAME",
+	"field": "NAME"
+}
+Sat Mar 31 2018 12:11:43 GMT-0500 (CDT) - LOG::: | ERROR ᑀ {
+	"name": "DupplicateError",
+	"message": "DuplicateError: NAME",
+	"field": "NAME"
+}
+Sat Mar 31 2018 12:13:22 GMT-0500 (CDT) - LOG::: | ERROR ᑀ {
+	"name": "DupplicateError",
+	"message": "DuplicateError: NAME",
+	"field": "NAME"
+}
+Sat Mar 31 2018 12:15:06 GMT-0500 (CDT) - LOG::: | ERROR ᑀ {
+	"name": "DupplicateError",
+	"message": "DuplicateError: NAME",
+	"field": "NAME"
+}
+Sat Mar 31 2018 12:18:14 GMT-0500 (CDT) - LOG::: | ERROR ᑀ {
+	"code": "ER_NO_REFERENCED_ROW_2",
+	"errno": 1452,
+	"sqlMessage": "Cannot add or update a child row: a foreign key constraint fails (`TERRA_TEST`.`REQUESTS_USERS`, CONSTRAINT `requests_users_user_id_foreign` FOREIGN KEY (`USER_id`) REFERENCES `USERS` (`id`))",
+	"sqlState": "23000",
+	"index": 0,
+	"sql": "insert into `REQUESTS_USERS` (`REQUEST_id`, `USER_id`) values (1, 1)"
+}
+Sat Mar 31 2018 12:18:46 GMT-0500 (CDT) - LOG::: | ERROR ᑀ {
+	"name": "DupplicateError",
+	"message": "DuplicateError: NAME",
+	"field": "NAME"
+}
+Sat Mar 31 2018 12:19:53 GMT-0500 (CDT) - LOG::: | ERROR ᑀ {
+	"name": "DupplicateError",
+	"message": "DuplicateError: NAME",
+	"field": "NAME"
+}
+Sat Mar 31 2018 12:24:07 GMT-0500 (CDT) - LOG::: | ERROR ᑀ {
+	"name": "DupplicateError",
+	"message": "DuplicateError: NAME",
+	"field": "NAME"
+}
