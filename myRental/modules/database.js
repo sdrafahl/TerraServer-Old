@@ -4,13 +4,16 @@ let fs = require('fs');
 let mysql = require("mysql");
 let bcrypt = require('bcryptjs');
 let crypto = require('crypto');
+let NodeGeocoder = require('node-geocoder');
 
 let config = require('../config.json');
+let keys = require('../configKeys.json');
 let Log = require('./Log.js');
 
 let logger = new Log();
 let User;
 let Request;
+let geocoder;
 
 function dataBaseModule(type) {
     let models = require('../models/UsersRequests.js');
@@ -21,6 +24,13 @@ function dataBaseModule(type) {
         User = models.User;
         Request = models.Request;
     }
+    let optionsForGeocoder = {
+        provider: 'OpenCage',
+        httpAdapter: 'https',
+        apiKey: keys.OpenCageAPIKey,
+        formatter: null,
+    };
+    geocoder = NodeGeocoder(optionsForGeocoder);
 };
 
 method.registerUser = (request, callBack) => {
@@ -152,8 +162,10 @@ method.searchForRequests = (request, callBack) => {
             city,
             state,
             zip,
-            country
+            country,
         } = request.body;
+
+        
 
     } else {
         return callBack ({
