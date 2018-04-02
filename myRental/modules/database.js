@@ -165,7 +165,13 @@ method.searchForRequests = (request, callBack) => {
             country,
         } = request.body;
 
-        
+        geocoder.geocode(streetAddress + " " + city + " , " + state + " " + zip + " " + country)
+            .then((response) => {
+
+            })
+            .catch((error) => {
+                logger.log(error);
+            });
 
     } else {
         return callBack ({
