@@ -143,6 +143,26 @@ method.handleRequest = (request, callBack) => {
     }
 }
 
+method.searchForRequests = (request, callBack) => {
+    if(request.session.loggedIn) {
+
+        let {
+            max,
+            streetAddress,
+            city,
+            state,
+            zip,
+            country
+        } = request.body;
+
+    } else {
+        return callBack ({
+            success: false,
+            message: 'Cannot search for request when not logged in.'
+        });
+    }
+}
+
 function decrypt(encryptedPassword) {
     let decipher = crypto.createDecipher(config.client_side_encryption.algorithm,
         config.client_side_encryption.password);
