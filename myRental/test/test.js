@@ -75,12 +75,16 @@ describe('requestController', () => {
                         'withRelated': ['requests']
                     }).then((user) => {
                         let request = user.related('requests').toJSON();
+                        console.log(testUserRequest.body.email);
+                        console.log(request);
                         let jsonRequest = JSON.parse(request[0].JSON_REQUEST);
+                        //console.log(jsonRequest);
                         assert.equal(jsonRequest.lawnCare.height, testServiceRequest.body.serviceRequest.lawnCare.height);
                         assert.equal(request[0].price, testServiceRequest.body.serviceRequest.price);
                         done();
                     })
                     .catch((err) => {
+                       console.log(err);
                        assert(false);
                        done();
                     });
@@ -128,6 +132,7 @@ function generateFakeServiceRequest() {
             'zip': faker.address.zipCode(),
             'city': faker.address.city(),
             'price': faker.random.number(),
+            'country': faker.address.country(),
         },
         'session': {
             'loggedIn': true,

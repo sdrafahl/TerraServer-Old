@@ -4,16 +4,15 @@ let fs = require('fs');
 let mysql = require("mysql");
 let bcrypt = require('bcryptjs');
 let crypto = require('crypto');
-let NodeGeocoder = require('node-geocoder');
-
 let config = require('../config.json');
 let keys = require('../configKeys.json');
 let Log = require('./Log.js');
+let geocoder = require('geocoder');
 
 let logger = new Log();
 let User;
 let Request;
-let geocoder;
+
 
 function dataBaseModule(type) {
     let models = require('../models/UsersRequests.js');
@@ -24,13 +23,6 @@ function dataBaseModule(type) {
         User = models.User;
         Request = models.Request;
     }
-    let optionsForGeocoder = {
-        provider: 'OpenCage',
-        httpAdapter: 'https',
-        apiKey: keys.OpenCageAPIKey,
-        formatter: null,
-    };
-    geocoder = NodeGeocoder(optionsForGeocoder);
 };
 
 method.registerUser = (request, callBack) => {
@@ -83,7 +75,6 @@ method.login = (request, callBack) => {
         password,
     } = request.body;
     password = decrypt(password);
-
     User.query((qb) => {
         qb.where('NAME', username).orWhere('EMAIL', username);
     }).fetch()
@@ -98,6 +89,7 @@ method.login = (request, callBack) => {
             }
         });
     }).catch((err) => {
+        console.log(err);
         return callBack ({
             success: false,
         });
@@ -113,37 +105,44 @@ method.handleRequest = (request, callBack) => {
             state,
             serviceRequest,
             price,
+            country,
         } = request.body;
 
         let currentDate = new Date();
 
-        let insert = {
-            JSON_REQUEST: Buffer.from(JSON.stringify(serviceRequest)),
-            CREATED: currentDate,
-            STATE_OF_REQUEST: 'Not Processed',
-            ADDRESS: address,
-            CITY: city,
-            ZIP: zip,
-            STATE: state,
-            PRICE: price,
-        }
+        geocoder.geocode({'address': address, 'country': country, 'zipcode': zip}, (error, response) => {
 
-        Request.forge(insert)
-            .save()
-            .then((serviceRequestResponse) => {
-                return serviceRequestResponse.users().attach(request.session.userId);
-            })
-            .then(() => {
-                return callBack ({
-                    success: true,
+            let insert = {
+                JSON_REQUEST: Buffer.from(JSON.stringify(serviceRequest)),
+                CREATED: currentDate,
+                STATE_OF_REQUEST: 'Not Processed',
+                ADDRESS: address,
+                CITY: city,
+                ZIP: zip,
+                STATE: state,
+                PRICE: price,
+                COUNTRY: country,
+                LATITUDE: response.latitude,
+                LONGITUDE: response.longitude,
+            }
+
+            Request.forge(insert)
+                .save()
+                .then((serviceRequestResponse) => {
+                    return serviceRequestResponse.users().attach(request.session.userId);
+                })
+                .then(() => {
+                    return callBack ({
+                        success: true,
+                    });
+                })
+                .catch((error) => {
+                    logger.log(error);
+                    return callBack ({
+                        success: false,
+                    });
                 });
-            })
-            .catch((error) => {
-                logger.log(error);
-                return callBack ({
-                    success: false,
-                });
-            });
+        });
 
     } else {
         return callBack ({
@@ -154,8 +153,7 @@ method.handleRequest = (request, callBack) => {
 }
 
 method.searchForRequests = (request, callBack) => {
-    if(request.session.loggedIn) {
-
+    if (request.session.loggedIn) {
         let {
             max,
             streetAddress,
@@ -165,21 +163,30 @@ method.searchForRequests = (request, callBack) => {
             country,
         } = request.body;
 
-        geocoder.geocode(streetAddress + " " + city + " , " + state + " " + zip + " " + country)
+        geocoder.geocode({ 'address': streetAddress, 'country': country, 'zipcode': zip })
             .then((response) => {
-
-            })
-            .catch((error) => {
+                Request.query((queryItem) => {
+                    queryItem.limit(max);
+                    queryItem.where('STATE_OF_REQUEST', 'unfulfilled');
+                    queryItem.orderBy("SQRT(POW(" + reponse.longitude + " - LONGITUDE, 2) + POW(" + response.latitude + "- LATITUDE , 2))");
+                }).fetchAll().then((models) => {
+                    return callBack ({
+                        success: true,
+                        data: models,
+                    });
+                });
+            }).catch((error) => {
                 logger.log(error);
             });
 
-    } else {
-        return callBack ({
-            success: false,
-            message: 'Cannot search for request when not logged in.'
-        });
+        } else {
+            return callBack({
+                success: false,
+                message: 'Cannot search for request when not logged in.'
+            });
+        }
     }
-}
+// SELECT * FROM REQUESTS WHERE STATE_OF_REQUEST = 'Not Processed' ORDER BY SQRT(POW(10 - LONGITUDE, 2) + POW(15 - LATITUDE , 2));
 
 function decrypt(encryptedPassword) {
     let decipher = crypto.createDecipher(config.client_side_encryption.algorithm,
