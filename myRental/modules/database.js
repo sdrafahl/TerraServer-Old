@@ -173,15 +173,34 @@ method.searchForRequests = (request, callBack) => {
 
         geocoder.find(addressString, (error, response) => {
 
-            Request.query(( queryItem) => {
-                queryItem.debug(true);
+            Request.query((queryItem) => {
                 queryItem.limit(max);
                 queryItem.where('STATE_OF_REQUEST', 'Not Processed');
                 queryItem.orderByRaw('SQRT(POW(' + response[0].location.lng + ' - LONGITUDE, 2) + POW(' + response[0].location.lat + '- LATITUDE , 2))');
             }).fetchAll().then((models) => {
+
+                let listOfModels = [];
+
+                models.forEach((model) => {
+                    let modelData = {
+                        'lawnCareDetails': model.get('JSON_REQUEST'),
+                        'created': model.get('CREATED'),
+                        'status': model.get('STATE_OF_REQUEST'),
+                        'streetAddress': model.get('ADDRESS'),
+                        'city': model.get('CITY'),
+                        'zip': model.get('ZIP'),
+                        'state': model.get('STATE'),
+                        'price': model.get('PRICE'),
+                        'latitude': model.get('LATITUDE'),
+                        'longitude': model.get('LONGITUDE'),
+                        'country': model.get('COUNTRY'),
+                    }
+                    listOfModels.push(modelData);
+                });
+
                 return callBack ({
                     success: true,
-                    data: models,
+                    data: listOfModels,
                 });
             });
         });

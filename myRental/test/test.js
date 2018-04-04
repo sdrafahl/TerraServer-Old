@@ -98,8 +98,9 @@ describe('requestController', () => {
                     database.handleRequest(serviceRequest2, (cb) => {
                         database.handleRequest(serviceRequest3, (cb) => {
                             database.searchForRequests(generateSearchRequest(), (models) => {
-                                console.log(models);
-                                assert(true);
+                                assert.equal(models.data[0].streetAddress, '201 E 17th St N');
+                                assert.equal(models.data[1].streetAddress, '801-1099 W 2nd St S');
+                                assert.equal(models.data[2].streetAddress, '2728-2798 S 12th Ave W');
                                 done();
                             });
                         });
