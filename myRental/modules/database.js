@@ -211,7 +211,6 @@ method.searchForRequests = (request, callBack) => {
             });
         }
     }
-// SELECT * FROM REQUESTS WHERE STATE_OF_REQUEST = 'Not Processed' ORDER BY SQRT(POW(10 - LONGITUDE, 2) + POW(15 - LATITUDE , 2));
 
 function decrypt(encryptedPassword) {
     let decipher = crypto.createDecipher(config.client_side_encryption.algorithm,
