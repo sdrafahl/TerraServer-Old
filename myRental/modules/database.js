@@ -182,7 +182,7 @@ method.searchForRequests = (request, callBack) => {
                 let listOfModels = [];
 
                 models.forEach((model) => {
-                    let modelData = {
+                    listOfModels.push ({
                         'lawnCareDetails': model.get('JSON_REQUEST'),
                         'created': model.get('CREATED'),
                         'status': model.get('STATE_OF_REQUEST'),
@@ -194,8 +194,7 @@ method.searchForRequests = (request, callBack) => {
                         'latitude': model.get('LATITUDE'),
                         'longitude': model.get('LONGITUDE'),
                         'country': model.get('COUNTRY'),
-                    }
-                    listOfModels.push(modelData);
+                    });
                 });
 
                 return callBack ({

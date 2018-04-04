@@ -12,4 +12,10 @@ router.post('/handleRequest', (request, response) => {
     });
 });
 
+router.post('/searchRequest', (request, response) => {
+    database.searchForRequests(request, (callBack) => {
+        response.json(callBack);
+    });
+});
+
 module.exports = router;
