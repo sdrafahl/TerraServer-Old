@@ -61,8 +61,6 @@ describe('Database Module Test', () => {
   });
 });
 
-
-
 describe('requestController', () => {
 
     describe('post -> /handleRequest', () => {
@@ -75,16 +73,12 @@ describe('requestController', () => {
                         'withRelated': ['requests']
                     }).then((user) => {
                         let request = user.related('requests').toJSON();
-                        console.log(testUserRequest.body.email);
-                        console.log(request);
                         let jsonRequest = JSON.parse(request[0].JSON_REQUEST);
-                        //console.log(jsonRequest);
                         assert.equal(jsonRequest.lawnCare.height, testServiceRequest.body.serviceRequest.lawnCare.height);
                         assert.equal(request[0].price, testServiceRequest.body.serviceRequest.price);
                         done();
                     })
                     .catch((err) => {
-                       console.log(err);
                        assert(false);
                        done();
                     });
@@ -92,7 +86,46 @@ describe('requestController', () => {
             });
         });
     });
+
+    describe('post -> /searchRequest', () => {
+        it('A set of requests should be created and be searched', (done) => {
+            let testUserRequest = generateFakeUserRequest();
+            let serviceRequest1 = generateFakeServiceRequest1();
+            let serviceRequest2 = generateFakeServiceRequest2();
+            let serviceRequest3 = generateFakeServiceRequest3();
+            database.registerUser(testUserRequest, (cb) => {
+                database.handleRequest(serviceRequest1, (cb) => {
+                    database.handleRequest(serviceRequest2, (cb) => {
+                        database.handleRequest(serviceRequest3, (cb) => {
+                            database.searchForRequests(generateSearchRequest(), (models) => {
+                                console.log(models);
+                                assert(true);
+                                done();
+                            });
+                        });
+                    });
+                });
+            });
+        });
+    });
 });
+
+function generateSearchRequest() {
+    return {
+        'body': {
+            'max': 3,
+            'address': '800-820 E 15th St N',
+            'city': 'Newton',
+            'state': 'Iowa',
+            'zip': 50314,
+            'country': 'United States',
+        },
+        'session': {
+            'loggedIn': true,
+            'userId': 1,
+        },
+    };
+}
 
 function generateFakeUserRequest() {
     let fakePass = faker.internet.password();
@@ -127,12 +160,96 @@ function generateFakeServiceRequest() {
                     'misc': "",
                 }
             },
-            'address': faker.address.streetAddress(),
-            'state': faker.address.state(),
-            'zip': faker.address.zipCode(),
-            'city': faker.address.city(),
+            'address': "1902 Crocker Street",
+            'state': "Iowa",
+            'zip': 50314,
+            'city': "Des Moines",
             'price': faker.random.number(),
-            'country': faker.address.country(),
+            'country': "United States",
+        },
+        'session': {
+            'loggedIn': true,
+            'userId': 1,
+        },
+    }
+}
+
+function generateFakeServiceRequest1() {
+    return {
+        'body': {
+            'serviceRequest': {
+                'lawnCare': {
+                    'height': faker.random.number(),
+                    'pattern': "stripe",
+                    'fertilize': false,
+                    'water': false,
+                    'seeds': false,
+                    'removeWeeds': false,
+                    'misc': "",
+                }
+            },
+            'address': "201 E 17th St N",
+            'state': "Iowa",
+            'zip': 50208,
+            'city': "Newton",
+            'price': faker.random.number(),
+            'country': "United States",
+        },
+        'session': {
+            'loggedIn': true,
+            'userId': 1,
+        },
+    }
+}
+
+function generateFakeServiceRequest2() {
+    return {
+        'body': {
+            'serviceRequest': {
+                'lawnCare': {
+                    'height': faker.random.number(),
+                    'pattern': "stripe",
+                    'fertilize': false,
+                    'water': false,
+                    'seeds': false,
+                    'removeWeeds': false,
+                    'misc': "",
+                }
+            },
+            'address': "801-1099 W 2nd St S",
+            'state': "Iowa",
+            'zip': 50208,
+            'city': "Newton",
+            'price': faker.random.number(),
+            'country': "United States",
+        },
+        'session': {
+            'loggedIn': true,
+            'userId': 1,
+        },
+    }
+}
+
+function generateFakeServiceRequest3() {
+    return {
+        'body': {
+            'serviceRequest': {
+                'lawnCare': {
+                    'height': faker.random.number(),
+                    'pattern': "stripe",
+                    'fertilize': false,
+                    'water': false,
+                    'seeds': false,
+                    'removeWeeds': false,
+                    'misc': "",
+                }
+            },
+            'address': "2728-2798 S 12th Ave W",
+            'state': "Iowa",
+            'zip': 50208,
+            'city': "Newton",
+            'price': faker.random.number(),
+            'country': "United States",
         },
         'session': {
             'loggedIn': true,

@@ -12,6 +12,7 @@ let User = bookshelf.Model.extend ({
 let UserTest = bookshelfTest.Model.extend ({
     tableName: "USERS",
     duplicates: ["NAME", "EMAIL"],
+    debug: true,
 	requests: function() {
 		return this.belongsToMany(RequestTest);
 	},
@@ -26,6 +27,7 @@ let Request = bookshelf.Model.extend ({
 
 let RequestTest = bookshelfTest.Model.extend ({
     tableName: "REQUESTS",
+    debug: true,
 	users: function() {
 		return this.belongsToMany(UserTest);
 	},

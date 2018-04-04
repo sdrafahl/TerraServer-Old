@@ -21,6 +21,7 @@
     "express-session": "^1.15.6",
     "faker": "^4.1.0",
     "geocoder": "^0.2.3",
+    "google-geocoder": "^0.2.1",
     "knex": "^0.13.0",
     "mock-express": "^1.2.0",
     "morgan": "~1.7.0",

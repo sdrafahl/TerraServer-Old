@@ -4,14 +4,17 @@ let fs = require('fs');
 let mysql = require("mysql");
 let bcrypt = require('bcryptjs');
 let crypto = require('crypto');
+let Geocoder = require('google-geocoder');
+
 let config = require('../config.json');
 let keys = require('../configKeys.json');
 let Log = require('./Log.js');
-let geocoder = require('geocoder');
+
 
 let logger = new Log();
 let User;
 let Request;
+let geocoder;
 
 
 function dataBaseModule(type) {
@@ -23,6 +26,9 @@ function dataBaseModule(type) {
         User = models.User;
         Request = models.Request;
     }
+    geocoder = Geocoder({
+        key: keys.googleMapsGeocoding,
+    });
 };
 
 method.registerUser = (request, callBack) => {
@@ -89,7 +95,6 @@ method.login = (request, callBack) => {
             }
         });
     }).catch((err) => {
-        console.log(err);
         return callBack ({
             success: false,
         });
@@ -110,7 +115,8 @@ method.handleRequest = (request, callBack) => {
 
         let currentDate = new Date();
 
-        geocoder.geocode({'address': address, 'country': country, 'zipcode': zip}, (error, response) => {
+        let addressString = address + " " + city + " , " + state + " " + zip + " " + country;
+        geocoder.find(addressString, (error, response) => {
 
             let insert = {
                 JSON_REQUEST: Buffer.from(JSON.stringify(serviceRequest)),
@@ -122,8 +128,8 @@ method.handleRequest = (request, callBack) => {
                 STATE: state,
                 PRICE: price,
                 COUNTRY: country,
-                LATITUDE: response.latitude,
-                LONGITUDE: response.longitude,
+                LATITUDE: response[0].location.lat,
+                LONGITUDE: response[0].location.lng,
             }
 
             Request.forge(insert)
@@ -156,28 +162,29 @@ method.searchForRequests = (request, callBack) => {
     if (request.session.loggedIn) {
         let {
             max,
-            streetAddress,
+            address,
             city,
             state,
             zip,
             country,
         } = request.body;
 
-        geocoder.geocode({ 'address': streetAddress, 'country': country, 'zipcode': zip })
-            .then((response) => {
-                Request.query((queryItem) => {
-                    queryItem.limit(max);
-                    queryItem.where('STATE_OF_REQUEST', 'unfulfilled');
-                    queryItem.orderBy("SQRT(POW(" + reponse.longitude + " - LONGITUDE, 2) + POW(" + response.latitude + "- LATITUDE , 2))");
-                }).fetchAll().then((models) => {
-                    return callBack ({
-                        success: true,
-                        data: models,
-                    });
+        let addressString = address + " " + city + " , " + state + " " + zip + " " + country;
+
+        geocoder.find(addressString, (error, response) => {
+
+            Request.query(( queryItem) => {
+                queryItem.debug(true);
+                queryItem.limit(max);
+                queryItem.where('STATE_OF_REQUEST', 'Not Processed');
+                queryItem.orderByRaw('SQRT(POW(' + response[0].location.lng + ' - LONGITUDE, 2) + POW(' + response[0].location.lat + '- LATITUDE , 2))');
+            }).fetchAll().then((models) => {
+                return callBack ({
+                    success: true,
+                    data: models,
                 });
-            }).catch((error) => {
-                logger.log(error);
             });
+        });
 
         } else {
             return callBack({
