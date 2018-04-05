@@ -4,8 +4,8 @@ let mysql = require("mysql");
 let fs = require('fs');
 let bcrypt = require('bcryptjs');
 let exec = require('child_process').exec;
-let Log = require('../modules/Log.js');
 
+let Log = require('../modules/Log.js');
 let DataBase = require('../modules/database.js');
 let User = require('../models/UsersRequests.js').UserTest;
 let Request = require('../models/UsersRequests.js').RequestTest;
