@@ -182,7 +182,7 @@ method.searchForRequests = (request, callBack) => {
                 let listOfModels = [];
 
                 models.forEach((model) => {
-                    listOfModels.push ({
+                    listOfModels.push({
                         'lawnCareDetails': model.get('JSON_REQUEST'),
                         'created': model.get('CREATED'),
                         'status': model.get('STATE_OF_REQUEST'),
@@ -197,20 +197,20 @@ method.searchForRequests = (request, callBack) => {
                     });
                 });
 
-                return callBack ({
+                return callBack({
                     success: true,
                     data: listOfModels,
                 });
             });
         });
 
-        } else {
-            return callBack({
-                success: false,
-                message: 'Cannot search for request when not logged in.'
-            });
-        }
+    } else {
+        return callBack({
+            success: false,
+            message: 'Cannot search for request when not logged in.'
+        });
     }
+}
 
 function decrypt(encryptedPassword) {
     let decipher = crypto.createDecipher(config.client_side_encryption.algorithm,
