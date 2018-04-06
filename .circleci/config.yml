@@ -29,8 +29,7 @@ jobs:
       - checkout
       - run:
           name: Test
-          command: npm test
-          working_directory: /myRental
+          command: myRental/npm test
       - run:
           name: Generate code coverage
           command: './node_modules/.bin/nyc report --reporter=text-lcov'
