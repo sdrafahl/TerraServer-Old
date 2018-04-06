@@ -11,12 +11,12 @@ jobs:
       - checkout
       - run:
           name: Update npm
-          command: 'sudo npm install -g npm@latest'
+          command: 'cd myRental; sudo npm install -g npm@latest'
       - restore_cache:
           key: dependency-cache-{{ checksum "package.json" }}
       - run:
-          name: Install npm wee
-          command: npm install
+          name: Install npm
+          command: cd myRental; npm install
       - save_cache:
           key: dependency-cache-{{ checksum "package.json" }}
           paths:
@@ -29,7 +29,7 @@ jobs:
       - checkout
       - run:
           name: Test
-          command: cd myRental; ls; npm test
+          command: cd myRental; npm test
       - run:
           name: Generate code coverage
           command: './node_modules/.bin/nyc report --reporter=text-lcov'
