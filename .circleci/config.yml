@@ -29,7 +29,7 @@ jobs:
       - checkout
       - run:
           name: Test
-          command: cd myRental;npm install mocha; npm test
+          command: cd myRental;npm install; npm test
       - run:
           name: Generate code coverage
           command: './node_modules/.bin/nyc report --reporter=text-lcov'
