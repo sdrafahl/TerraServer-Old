@@ -1,3 +1,5 @@
+"use strict";
+
 let assert = require('assert');
 let MockExpress = require('mock-express');
 let mysql = require("mysql");
