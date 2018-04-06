@@ -28,6 +28,9 @@ jobs:
     steps:
       - checkout
       - run:
+          name: read
+          command: ls
+      - run:
           name: Test
           command: npm test
       - run:
