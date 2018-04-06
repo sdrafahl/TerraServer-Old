@@ -27,7 +27,7 @@ jobs:
       - image: mongo:3.4.4
     steps:
       - checkout
-      - check:
+      - run:
           name: read
           command: ls
       - run:
