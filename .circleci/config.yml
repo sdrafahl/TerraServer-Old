@@ -28,11 +28,8 @@ jobs:
     steps:
       - checkout
       - run:
-          name: read
-          command: cd myRental
-      - run:
           name: Test
-          command: npm test
+          command: cd myRental; npm test
       - run:
           name: Generate code coverage
           command: './node_modules/.bin/nyc report --reporter=text-lcov'
