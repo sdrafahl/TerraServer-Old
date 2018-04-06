@@ -15,7 +15,7 @@ jobs:
       - restore_cache:
           key: dependency-cache-{{ checksum "package.json" }}
       - run:
-          name: Install npm wee
+          name: Install npm
           command: myRental/npm install
       - save_cache:
           key: dependency-cache-{{ checksum "package.json" }}
@@ -30,7 +30,7 @@ jobs:
       - run:
           name: Test
           command: npm test
-          working_directory: myRental
+          working_directory: /myRental
       - run:
           name: Generate code coverage
           command: './node_modules/.bin/nyc report --reporter=text-lcov'
