@@ -1,22 +1,21 @@
 version: 2
 jobs:
   build:
-    machine:
-        enable: true
-            steps:
-              - checkout
-              - run:
-                  name: Update npm
-                  command: sudo npm update
-              - restore_cache:
-                  key: dependency-cache-{{ checksum "package.json" }}
-              - run:
-                  name: Install Packages
-                  command: sudo npm install
-              - save_cache:
-                  key: dependency-cache-{{ checksum "package.json" }}
-                  paths:
-                    - node_modules
+    docker:
+        steps:
+          - checkout
+          - run:
+              name: Update npm
+              command: sudo npm update
+          - restore_cache:
+              key: dependency-cache-{{ checksum "package.json" }}
+          - run:
+              name: Install Packages
+              command: sudo npm install
+          - save_cache:
+              key: dependency-cache-{{ checksum "package.json" }}
+              paths:
+                - node_modules
   test:
     steps:
       - checkout
