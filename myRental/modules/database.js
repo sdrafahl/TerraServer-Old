@@ -4,13 +4,18 @@ let fs = require('fs');
 let mysql = require("mysql");
 let bcrypt = require('bcryptjs');
 let crypto = require('crypto');
+let Geocoder = require('google-geocoder');
 
 let config = require('../config.json');
+let keys = require('../configKeys.json');
 let Log = require('./Log.js');
+
 
 let logger = new Log();
 let User;
 let Request;
+let geocoder;
+
 
 function dataBaseModule(type) {
     let models = require('../models/UsersRequests.js');
@@ -21,6 +26,9 @@ function dataBaseModule(type) {
         User = models.User;
         Request = models.Request;
     }
+    geocoder = Geocoder({
+        key: keys.googleMapsGeocoding,
+    });
 };
 
 method.registerUser = (request, callBack) => {
@@ -32,6 +40,7 @@ method.registerUser = (request, callBack) => {
         zip,
         state,
         password,
+        country,
     } = request.body;
 
     password = hashPassword(decrypt(password));
@@ -49,7 +58,8 @@ method.registerUser = (request, callBack) => {
         ADDRESS: address,
         CITY: city,
         ZIP: zip,
-        STATE: state
+        STATE: state,
+        COUNTRY: country,
     };
 
     User.forge(insert)
@@ -73,7 +83,6 @@ method.login = (request, callBack) => {
         password,
     } = request.body;
     password = decrypt(password);
-
     User.query((qb) => {
         qb.where('NAME', username).orWhere('EMAIL', username);
     }).fetch()
@@ -103,42 +112,105 @@ method.handleRequest = (request, callBack) => {
             state,
             serviceRequest,
             price,
+            country,
         } = request.body;
 
         let currentDate = new Date();
 
-        let insert = {
-            JSON_REQUEST: Buffer.from(JSON.stringify(serviceRequest)),
-            CREATED: currentDate,
-            STATE_OF_REQUEST: 'Not Processed',
-            ADDRESS: address,
-            CITY: city,
-            ZIP: zip,
-            STATE: state,
-            PRICE: price,
-        }
+        let addressString = `${address} ${city}, ${state} ${zip} ${country}`;
+        geocoder.find(addressString, (error, response) => {
+            logger.log(error);
 
-        Request.forge(insert)
-            .save()
-            .then((serviceRequestResponse) => {
-                return serviceRequestResponse.users().attach(request.session.userId);
-            })
-            .then(() => {
-                return callBack ({
-                    success: true,
+            let insert = {
+                JSON_REQUEST: Buffer.from(JSON.stringify(serviceRequest)),
+                CREATED: currentDate,
+                STATE_OF_REQUEST: 'Not Processed',
+                ADDRESS: address,
+                CITY: city,
+                ZIP: zip,
+                STATE: state,
+                PRICE: price,
+                COUNTRY: country,
+                LATITUDE: response[0].location.lat,
+                LONGITUDE: response[0].location.lng,
+            }
+
+            Request.forge(insert)
+                .save()
+                .then((serviceRequestResponse) => {
+                    return serviceRequestResponse.users().attach(request.session.userId);
+                })
+                .then(() => {
+                    return callBack ({
+                        success: true,
+                    });
+                })
+                .catch((error) => {
+                    logger.log(error);
+                    return callBack ({
+                        success: false,
+                    });
                 });
-            })
-            .catch((error) => {
-                logger.log(error);
-                return callBack ({
-                    success: false,
-                });
-            });
+        });
 
     } else {
         return callBack ({
             success: false,
             message: 'Cannot Make Request When Not Logged In'
+        });
+    }
+}
+
+method.searchForRequests = (request, callBack) => {
+    if (request.session.loggedIn) {
+        let {
+            max,
+            address,
+            city,
+            state,
+            zip,
+            country,
+        } = request.body;
+
+        let addressString = address + " " + city + " , " + state + " " + zip + " " + country;
+
+        geocoder.find(addressString, (error, response) => {
+
+            Request.query((queryItem) => {
+                queryItem.limit(max);
+                queryItem.where('STATE_OF_REQUEST', 'Not Processed');
+                queryItem.orderByRaw('SQRT(POW(' + response[0].location.lng + ' - LONGITUDE, 2) + POW(' + response[0].location.lat + '- LATITUDE , 2))');
+            }).fetchAll().then((models) => {
+
+                let listOfModels = [];
+
+                models.forEach((model) => {
+                    listOfModels.push({
+                        'lawnCareDetails': model.get('JSON_REQUEST'),
+                        'created': model.get('CREATED'),
+                        'status': model.get('STATE_OF_REQUEST'),
+                        'streetAddress': model.get('ADDRESS'),
+                        'city': model.get('CITY'),
+                        'zip': model.get('ZIP'),
+                        'state': model.get('STATE'),
+                        'price': model.get('PRICE'),
+                        'latitude': model.get('LATITUDE'),
+                        'longitude': model.get('LONGITUDE'),
+                        'country': model.get('COUNTRY'),
+                    });
+                });
+
+                return callBack({
+                    success: true,
+                    data: listOfModels,
+                });
+            });
+        });
+
+    } else {
+        return callBack({
+            success: false,
+            message: 'Cannot search for request when not logged in.'
         });
     }
 }

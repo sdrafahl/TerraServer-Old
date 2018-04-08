@@ -19,6 +19,8 @@ cd scripts
 
 ```
 
+Before you can start the service you will need the google maps API key. Shane will have the api key. You will need to create a file called configKeys.json under myRental directory.
+
 Now you need to start the redis database server for the session a directory above the scripts directory.
 
 ```
