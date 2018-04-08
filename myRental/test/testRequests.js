@@ -30,6 +30,7 @@ function generateFakeUserRequest() {
             'state': faker.address.state(),
             'zip': faker.address.zipCode(),
             'city': faker.address.city(),
+            'country': faker.address.country(),
         },
         'session': {
             'loggedIn': false,

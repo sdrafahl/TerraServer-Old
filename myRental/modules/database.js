@@ -40,6 +40,7 @@ method.registerUser = (request, callBack) => {
         zip,
         state,
         password,
+        country,
     } = request.body;
 
     password = hashPassword(decrypt(password));
@@ -57,7 +58,8 @@ method.registerUser = (request, callBack) => {
         ADDRESS: address,
         CITY: city,
         ZIP: zip,
-        STATE: state
+        STATE: state,
+        COUNTRY: country,
     };
 
     User.forge(insert)
@@ -115,8 +117,9 @@ method.handleRequest = (request, callBack) => {
 
         let currentDate = new Date();
 
-        let addressString = address + " " + city + " , " + state + " " + zip + " " + country;
+        let addressString = `${address} ${city}, ${state} ${zip} ${country}`;
         geocoder.find(addressString, (error, response) => {
+            logger.log(error);
 
             let insert = {
                 JSON_REQUEST: Buffer.from(JSON.stringify(serviceRequest)),
