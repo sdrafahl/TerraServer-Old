@@ -151,6 +151,34 @@ function generateFakeServiceRequest3() {
     }
 }
 
+function generateFakeServiceRequest4() {
+    return {
+        'body': {
+            'serviceRequest': {
+                'lawnCare': {
+                    'height': faker.random.number(),
+                    'pattern': "stripe",
+                    'fertilize': false,
+                    'water': false,
+                    'seeds': false,
+                    'removeWeeds': false,
+                    'misc': "",
+                }
+            },
+            'address': "2728-2798 S 12th Ave W",
+            'state': "Iowa",
+            'zip': 50208,
+            'city': "Newton",
+            'price': faker.random.number(),
+            'country': "United States",
+        },
+        'session': {
+            'loggedIn': false,
+            'userId': 1,
+        },
+    }
+}
+
 function encrypt(password) {
     let cipher = crypto.createCipher(config.client_side_encryption.algorithm,
             config.client_side_encryption.password);
@@ -166,4 +194,5 @@ module.exports = {
     'generateFakeServiceRequest1': generateFakeServiceRequest1,
     'generateFakeServiceRequest2': generateFakeServiceRequest2,
     'generateFakeServiceRequest3': generateFakeServiceRequest3,
+    'generateFakeServiceRequest4': generateFakeServiceRequest4,
 };

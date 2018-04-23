@@ -26,7 +26,6 @@ describe('Database Module Test', () => {
   });
 
   describe('userController', () => {
-
     describe('post -> /create', () => {
       it('A user should be created', (done) => {
           let testUserRequest = helperFunctions.generateFakeUserRequest();
@@ -63,7 +62,6 @@ describe('Database Module Test', () => {
 });
 
 describe('requestController', () => {
-
     describe('post -> /handleRequest', () => {
         it('A request should be saved and associated to a user', (done) => {
             let testUserRequest = helperFunctions.generateFakeUserRequest();
@@ -80,6 +78,26 @@ describe('requestController', () => {
                         done();
                     })
                     .catch((err) => {
+                       assert(false);
+                       done();
+                    });
+                });
+            });
+        });
+        it('A request should not be created because the User is not logged in', (done) => {
+            let testServiceRequest = helperFunctions.generateFakeServiceRequest4();
+            let testUserRequest = helperFunctions.generateFakeUserRequest();
+            database.registerUser(testUserRequest, (callBack) => {
+                database.handleRequest(testServiceRequest ,(callBack) => {
+                    User.where('NAME', testUserRequest.body.username).fetch({
+                        'withRelated': ['requests']
+                    }).then((user) => {
+                        assert.equal(callBack.message, 'Cannot Make Request When Not Logged In');
+                        let request = user.related('requests').toJSON();
+                        assert.equal(request, '');
+                        done();
+                    })
+                    .catch((error) => {
                        assert(false);
                        done();
                     });
