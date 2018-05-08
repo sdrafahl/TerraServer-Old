@@ -2,8 +2,21 @@
 
 ## Starting The Service
 
-The first thing you will need to do if you plan on using the React project with the express
-service is you will need to build the react side. You will also need to build it.
+First you will need to install Docker. After Docker is installed you will need to start docker.
+
+```
+sudo service docker start
+sudo docker -d
+
+```
+
+Now you will need to build the docker container from the same directory as the dockerfile.
+
+```
+docker build -t <your username>/terraserver .
+```
+
+You will also need to build it.
 
 ```
 npm build
@@ -62,7 +75,6 @@ To create a migration
 knex migrate:make setup
 
 ```
-
 
 ## Testing
 
