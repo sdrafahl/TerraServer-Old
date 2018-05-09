@@ -10,10 +10,16 @@ sudo docker -d
 
 ```
 
-Now you will need to build the docker container from the same directory as the dockerfile.
+Now you will need to build the docker container from the same directory as the dockerfile. You may need to install cgroup-lite to do this.
 
 ```
-docker build -t <your username>/terraserver .
+docker build -t <your username>/terraserver> .
+```
+
+After that you will now need to run the docker container.
+
+```
+docker run -p 49160:3002 -d <your username>/terraserver>
 ```
 
 You will also need to build it.
