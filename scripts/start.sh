@@ -1,4 +1,6 @@
 #!/bin/bash
-echo "Starting Express Server on Port 3002"
 cd ..
-PORT=3002 node bin/www
+echo "Start redis container"
+docker run -d --name redis1 redis
+echo "Running Container and linking to Redis container"
+sudo docker run -it --link redis1:redis --name terra-app terra

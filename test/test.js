@@ -39,7 +39,6 @@ describe('Database Module Test', () => {
                   done();
               })
               .catch((err) => {
-                 console.log(err);
                  assert(false);
                  done();
               });

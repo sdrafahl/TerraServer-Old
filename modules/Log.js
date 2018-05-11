@@ -7,7 +7,7 @@ let config = require('../config.json');
 let myClrlog = null;
 
 function logModule() {
-    myClrlog = new Clrlog("LOG", 'success', __dirname + '/../' + config.log_address, 'LOG:');
+    myClrlog = new Clrlog("LOG", 'success', __dirname + '/..' + config.log_address, 'LOG:');
 };
 
 method.log = (message) => {

@@ -20,10 +20,6 @@ WORKDIR /TerraServer
 
 run npm install
 
-WORKDIR /TerraServer/scripts/
-
 EXPOSE 3002
 
-CMD ./redis.sh
-
-CMD ./start.sh
+CMD PORT=3002 node bin/www

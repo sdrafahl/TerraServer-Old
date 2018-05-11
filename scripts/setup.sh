@@ -15,7 +15,10 @@ mysql -u root -p${password} -e "GRANT ALL PRIVILEGES ON * . * TO 'tester'@'local
 echo "Creating Databases"
 mysql -u root -p${password} -e "CREATE DATABASE TERRA_TEST;"
 mysql -u root -p${password} -e "CREATE DATABASE TERRA_DEV;"
-
 echo "Running migration"
 knex migrate:latest --env testing
 knex migrate:latest --env development
+echo "Building Docker Container"
+sudo docker build -t terra .
+echo "Pull redis container"
+sudo docker pull redis

@@ -24,8 +24,7 @@ function startRedis
 function turnOffRedis
 {
   echo "Turning off Redis"
-  sudo systemctl disable redis-server
-  sudo systemctl stop redis-server
+  sudo redis-cli shutdown
 }
 
 if [ "$1" == "-restart" ]
