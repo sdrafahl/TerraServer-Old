@@ -3,7 +3,7 @@ volumes:
 services:
  web:
     build: .
-    command: "PORT=3002 node bin/www"
+    command: "npm start"
     volumes:
       - .:/usr/app/
       - /usr/app/node_modules

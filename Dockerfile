@@ -22,4 +22,4 @@ run npm install
 
 EXPOSE 3002
 
-CMD PORT=3002 node bin/www
+CMD npm start
