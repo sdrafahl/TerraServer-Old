@@ -12,16 +12,12 @@ sudo docker -d
 
 Before you can start the service you will need the google maps API key. Shane will have the api key. You will need to create a file called configKeys.json under myRental directory.
 
-
-As of writing this readme to build TerraWeb you will need to cd into TerraWeb and run
-
-```
-sudo npm run watch-css
-sudo npm run build
+Now you just need to run the start script to build and run the docker containers from the scripts directory.
 
 ```
-This will generate the required CSS files and build the project.
-
+cd scripts
+./start.sh
+```
 
 ## Changing The Database
 
