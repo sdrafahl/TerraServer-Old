@@ -10,25 +10,18 @@ sudo docker -d
 
 ```
 
-Run the setup script to build the docker containers and to setup your username and password for MySQL.
-
-```
-cd scripts
-
-./setup.sh
-
-```
-
 Before you can start the service you will need the google maps API key. Shane will have the api key. You will need to create a file called configKeys.json under myRental directory.
 
-Now you will need to start the docker container. To do this run the start script.
+
+As of writing this readme to build TerraWeb you will need to cd into TerraWeb and run
 
 ```
-cd scripts
-
-./start.sh
+sudo npm run watch-css
+sudo npm run build
 
 ```
+This will generate the required CSS files and build the project.
+
 
 ## Changing The Database
 

@@ -10,7 +10,19 @@ Run apt-get install -y nodejs
 
 Run apt-get install -y git
 
-run apt-get install npm -y
+Run apt-get install npm -y
+
+Run git clone https://github.com/sdrafahl/TerraWeb.git
+
+WORKDIR /TerraWeb
+
+Run npm install
+
+Run npm run build-css
+
+Run npm run build
+
+WORKDIR ../
 
 Run git clone https://github.com/sdrafahl/TerraServer.git
 
@@ -20,6 +32,6 @@ WORKDIR /TerraServer
 
 run npm install
 
-EXPOSE 3002
+EXPOSE 3000
 
 CMD npm start
