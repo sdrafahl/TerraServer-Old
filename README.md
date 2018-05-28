@@ -2,38 +2,21 @@
 
 ## Starting The Service
 
-The first thing you will need to do if you plan on using the React project with the express
-service is you will need to build the react side. You will also need to build it.
+First you will need to install Docker. After Docker is installed you will need to start docker.
 
 ```
-npm build
-
-```
-
-Run the setup script to load the database schema file. The username is Shane. You will need to setup your own local mysql database on your system with that username before running the script.
-
-```
-cd scripts
-
-./setup.sh
+sudo service docker start
+sudo docker -d
 
 ```
 
 Before you can start the service you will need the google maps API key. Shane will have the api key. You will need to create a file called configKeys.json under myRental directory.
 
-Now you need to start the redis database server for the session a directory above the scripts directory.
-
-```
-./scripts/redis.sh -start
-```
-
-Start the server
+Now you just need to run the start script to build and run the docker containers from the scripts directory.
 
 ```
 cd scripts
-
 ./start.sh
-
 ```
 
 ## Changing The Database
@@ -62,7 +45,6 @@ To create a migration
 knex migrate:make setup
 
 ```
-
 
 ## Testing
 

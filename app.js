@@ -14,6 +14,8 @@ let config = require('./config.json');
 let app = express();
 let logger = new Logger();
 
+console.log("__̴ı̴̴̡̡̡ ̡͌l̡̡̡ ̡͌l̡*̡̡ ̴̡ı̴̴̡ ̡̡͡|̲̲̲͡͡͡ ̲▫̲͡ ̲̲̲͡͡π̲̲͡͡ ̲̲͡▫̲̲͡͡ ̲|̡̡̡ ̡ ̴̡ı̴̡̡ ̡͌l̡̡̡̡.___");
+
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
 

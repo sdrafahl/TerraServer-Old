@@ -1,4 +1,7 @@
 #!/bin/bash
-echo "Starting Express Server on Port 3002"
+reset
 cd ..
-PORT=3002 node bin/www
+echo "Building docker containers"
+sudo docker-compose build
+echo "Running docker containers"
+sudo docker-compose up

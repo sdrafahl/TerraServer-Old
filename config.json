@@ -26,7 +26,7 @@
     "redis" : {
         "store_data": {
             "host": "127.0.0.1",
-            "port": 4546,
+            "port": 6379,
             "prefix": "sess"
         },
         "redis_argument": {
