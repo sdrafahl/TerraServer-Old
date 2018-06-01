@@ -48,3 +48,9 @@ jobs:
               docker tag app ${AWS_ACCOUNT_ID}.dkr.ecr.us-east-2.amazonaws.com/terra-repo
               docker push ${AWS_ACCOUNT_ID}.dkr.ecr.us-east-2.amazonaws.com/terra-repo
             fi
+
+workflows:
+  version: 1
+  build_and_test:
+    jobs:
+      - build
