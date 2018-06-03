@@ -39,7 +39,13 @@ jobs:
           key: v1-{{ .Branch }}-{{ epoch }}
           paths:
             - /caches/app.tar
-      - test:
+
+  test:
+    requires: build
+    working_directory: /app
+    docker:
+      - image: docker:17.05.0-ce-git
+    steps:
         - run:
             name: Start Docker Container
             command: |
@@ -48,8 +54,13 @@ jobs:
             name: Run Backend tests
             command: |
                 docker exec -it app npm test
-      - deploy:
-        - run:
+  deploy:
+    requires: test
+    working_directory: /app
+    docker:
+      - image: docker:17.05.0-ce-git
+    steps:
+        - deploy:
             name: Push application Docker image
             command: |
               if [ "${CIRCLE_BRANCH}" == "master" ]; then
@@ -58,6 +69,7 @@ jobs:
                 docker tag app ${AWS_ACCOUNT_ID}.dkr.ecr.us-east-2.amazonaws.com/terra-repo
                 docker push ${AWS_ACCOUNT_ID}.dkr.ecr.us-east-2.amazonaws.com/terra-repo
               fi
+
 
 
 workflows:
