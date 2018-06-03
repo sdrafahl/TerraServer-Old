@@ -42,7 +42,7 @@ jobs:
 
   test:
     requires:
-        - build
+        - save_cache
     working_directory: /app
     docker:
       - image: docker:17.05.0-ce-git
@@ -51,13 +51,13 @@ jobs:
             name: Start Docker Container
             command: |
                 docker-compose up
-        - run:
+        - tests:
             name: Run Backend tests
             command: |
                 docker exec -it app npm test
   deploy:
     requires:
-        - test
+        - tests
     working_directory: /app
     docker:
       - image: docker:17.05.0-ce-git
