@@ -41,7 +41,8 @@ jobs:
             - /caches/app.tar
 
   test:
-    requires: build
+    requires:
+        - build
     working_directory: /app
     docker:
       - image: docker:17.05.0-ce-git
@@ -55,7 +56,8 @@ jobs:
             command: |
                 docker exec -it app npm test
   deploy:
-    requires: test
+    requires:
+        - test
     working_directory: /app
     docker:
       - image: docker:17.05.0-ce-git
