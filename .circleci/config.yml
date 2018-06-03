@@ -51,7 +51,7 @@ jobs:
             name: Start Docker Container
             command: |
                 docker-compose up
-        - tests:
+        - run:
             name: Run Backend tests
             command: |
                 docker exec -it app npm test
