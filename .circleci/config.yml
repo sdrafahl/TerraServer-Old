@@ -39,18 +39,41 @@ jobs:
           key: v1-{{ .Branch }}-{{ epoch }}
           paths:
             - /caches/app.tar
-      - deploy:
-          name: Push application Docker image
-          command: |
-            if [ "${CIRCLE_BRANCH}" == "master" ]; then
-              login="$(aws ecr get-login)"
-              ${login}
-              docker tag app ${AWS_ACCOUNT_ID}.dkr.ecr.us-east-2.amazonaws.com/terra-repo
-              docker push ${AWS_ACCOUNT_ID}.dkr.ecr.us-east-2.amazonaws.com/terra-repo
-            fi
+
+  test:
+    working_directory: /app
+    docker:
+      - image: docker:17.05.0-ce-git
+    steps:
+        - run:
+            name: Start Docker Container
+            command: |
+                docker-compose up
+        - run:
+            name: Run Backend tests
+            command: |
+                docker exec -it app npm test
+  deploy:
+    working_directory: /app
+    docker:
+      - image: docker:17.05.0-ce-git
+    steps:
+        - deploy:
+            name: Push application Docker image
+            command: |
+              if [ "${CIRCLE_BRANCH}" == "master" ]; then
+                login="$(aws ecr get-login)"
+                ${login}
+                docker tag app ${AWS_ACCOUNT_ID}.dkr.ecr.us-east-2.amazonaws.com/terra-repo
+                docker push ${AWS_ACCOUNT_ID}.dkr.ecr.us-east-2.amazonaws.com/terra-repo
+              fi
+
+
 
 workflows:
   version: 1
   build_and_test:
     jobs:
       - build
+      - test
+      - deploy
