@@ -39,7 +39,7 @@ jobs:
           key: v1-{{ .Branch }}-{{ epoch }}
           paths:
             - /caches/app.tar
-      - run: docker exec -it app npm test
+      - run: docker-compose up
 
   deploy:
     requires:
