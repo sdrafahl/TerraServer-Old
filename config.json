@@ -4,6 +4,7 @@
         "connection": {
             "database": "TERRA_DEV",
             "user": "dev",
+            "port": "3306",
             "password": "goon",
             "charset": "utf8",
             "host": ""
@@ -15,6 +16,7 @@
         "connection": {
             "database": "TERRA_TEST",
             "user": "tester",
+            "port": "3306",
             "password": "goon",
             "charset": "utf8",
             "host": ""
@@ -25,7 +27,7 @@
 
     "redis" : {
         "store_data": {
-            "host": "127.0.0.1",
+            "host": "192.168.10.10",
             "port": 6379,
             "prefix": "sess"
         },

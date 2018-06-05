@@ -1,0 +1,50 @@
+version: '2'
+volumes:
+services:
+ sut:
+     build: .
+     command: npm test
+     depends_on:
+         - web
+ web:
+    build: .
+    command: "npm start"
+    links:
+        - redis
+        - mysql
+    volumes:
+      - .:/usr/app/
+      - /usr/app/node_modules
+    ports:
+      - "3000:3000"
+    depends_on:
+      - redis
+      - mysql
+    networks:
+        - web_sql_bridge
+ redis:
+    image: 'bitnami/redis:latest'
+    environment:
+        - ALLOW_EMPTY_PASSWORD=yes
+    ports:
+        - '6379:6379'
+ mysql:
+     image: mysql:5.7
+     container_name: mysql
+     restart: always
+     environment:
+         - MYSQL_ROOT_PASSWORD="goon"
+         - MYSQL_DATABASE="TERRA_TEST"
+         - MYSQL_DATABASE="TERRA_DEV"
+         - MYSQL_USER="tester"
+         - MYSQL_PASSWORD="goon"
+     ports:
+         - "3306:3306"
+     networks:
+         - web_sql_bridge
+volumes:
+    appconf:
+
+networks:
+  web_sql_bridge:
+    driver: bridge

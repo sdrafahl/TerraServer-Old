@@ -39,11 +39,25 @@ jobs:
           key: v1-{{ .Branch }}-{{ epoch }}
           paths:
             - /caches/app.tar
-      - run: docker-compose up
 
-  deploy:
+  test:
     requires:
         - build
+    working_directory: /app
+    docker:
+      - image: docker:17.05.0-ce-git
+    steps:
+        - run:
+            name: Start Docker Container
+            command: |
+                docker-compose up
+        - tests:
+            name: Run Backend tests
+            command: |
+                docker exec -it app npm test
+  deploy:
+    requires:
+        - test
     working_directory: /app
     docker:
       - image: docker:17.05.0-ce-git
@@ -57,14 +71,14 @@ jobs:
                 docker tag app ${AWS_ACCOUNT_ID}.dkr.ecr.us-east-2.amazonaws.com/terra-repo
                 docker push ${AWS_ACCOUNT_ID}.dkr.ecr.us-east-2.amazonaws.com/terra-repo
               fi
-
-
-
 workflows:
   version: 1
   build_and_test:
     jobs:
       - build
-      - deploy:
+      - test:
           requires:
               - build
+      - deploy:
+          requires:
+              - test
