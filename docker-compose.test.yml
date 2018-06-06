@@ -30,8 +30,6 @@ services:
  mysql:
      image: mysql:5.7
      container_name: mysql
-     links:
-         - web
      restart: always
      environment:
          - MYSQL_ROOT_PASSWORD="goon"
