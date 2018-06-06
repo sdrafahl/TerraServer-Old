@@ -12,7 +12,6 @@ if (fs.existsSync("../passwords.json")) {
 }
 
 testDatabaseConfig.config = process.env.mysql_PORT;
-console.log(process.env.mysql_PORT);
 
 let knexTest = require('knex')(testDatabaseConfig);
 let knex = require('knex')(devDatabaseConfig);
