@@ -20,8 +20,7 @@ services:
     depends_on:
       - redis
       - mysql
-    networks:
-        - web_sql_bridge
+
  redis:
     image: 'bitnami/redis:latest'
     environment:
@@ -31,6 +30,8 @@ services:
  mysql:
      image: mysql:5.7
      container_name: mysql
+     links:
+         - web
      restart: always
      environment:
          - MYSQL_ROOT_PASSWORD="goon"
@@ -42,8 +43,6 @@ services:
          - "3306:3306"
      networks:
          - web_sql_bridge
-         vpcbr:
-             ipv4_address: 127.0.0.1
 volumes:
     appconf:
 

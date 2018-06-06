@@ -2,7 +2,6 @@
     "database_dev" : {
         "client": "mysql",
         "connection": {
-            "host": "0.0.0.0",
             "database": "TERRA_DEV",
             "user": "dev",
             "port": "3306",
@@ -15,7 +14,6 @@
     "database_test" : {
         "client": "mysql",
         "connection": {
-            "host": "0.0.0.0",
             "database": "TERRA_TEST",
             "user": "tester",
             "port": "3306",

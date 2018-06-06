@@ -1,6 +1,11 @@
 version: '2'
 volumes:
 services:
+ sut:
+     build: .
+     command: npm test
+     depends_on:
+         - web
  web:
     build: .
     command: "npm start"
@@ -37,8 +42,6 @@ services:
          - "3306:3306"
      networks:
          - web_sql_bridge
-         vpcbr:
-             ipv4_address: 127.0.0.1
 volumes:
     appconf:
 
