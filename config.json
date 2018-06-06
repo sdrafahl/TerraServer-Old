@@ -1,5 +1,29 @@
 {
+    "database_dev" : {
+        "client": "mysql",
+        "connection": {
+            "host": "mysql",
+            "database": "TERRA_DEV",
+            "user": "dev",
+            "port": "3306",
+            "password": "goon",
+            "charset": "utf8",
+            "host": ""
+        }
+    },
 
+    "database_test" : {
+        "client": "mysql",
+        "connection": {
+            "host": "DB",
+            "database": "TERRA_TEST",
+            "user": "tester",
+            "port": "3306",
+            "password": "goon",
+            "charset": "utf8",
+            "host": ""
+        }
+    },
 
     "log_address" : "/logs/Error.log",
 

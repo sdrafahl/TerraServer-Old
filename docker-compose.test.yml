@@ -35,8 +35,6 @@ services:
          - MYSQL_DATABASE="TERRA_DEV"
          - MYSQL_USER="tester"
          - MYSQL_PASSWORD="goon"
-     ports:
-         - "3306:3306"
      networks:
          - web_sql_bridge
 volumes:
