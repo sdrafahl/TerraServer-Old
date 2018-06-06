@@ -15,7 +15,7 @@
     "database_test" : {
         "client": "mysql",
         "connection": {
-            "host": "mysql",
+            "host": "DB",
             "database": "TERRA_TEST",
             "user": "tester",
             "port": "3306",

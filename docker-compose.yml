@@ -9,9 +9,6 @@ services:
  web:
     build: .
     command: "npm start"
-    links:
-        - redis
-        - mysql
     volumes:
       - .:/usr/app/
       - /usr/app/node_modules

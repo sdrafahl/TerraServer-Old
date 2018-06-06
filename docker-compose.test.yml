@@ -9,9 +9,6 @@ services:
  web:
     build: .
     command: "npm start"
-    links:
-        - redis
-        - mysql
     volumes:
       - .:/usr/app/
       - /usr/app/node_modules
@@ -19,7 +16,9 @@ services:
       - "3000:3000"
     depends_on:
       - redis
-      - mysql
+      - DB
+    networks:
+        - web_sql_bridge
 
  redis:
     image: 'bitnami/redis:latest'
@@ -27,9 +26,8 @@ services:
         - ALLOW_EMPTY_PASSWORD=yes
     ports:
         - '6379:6379'
- mysql:
+ DB:
      image: mysql:5.7
-     container_name: mysql
      restart: always
      environment:
          - MYSQL_ROOT_PASSWORD="goon"
