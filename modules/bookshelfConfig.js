@@ -12,6 +12,7 @@ if (fs.existsSync("../passwords.json")) {
 }
 
 let knexTest = require('knex')(testDatabaseConfig);
+console.log(testDatabaseConfig);
 let knex = require('knex')(devDatabaseConfig);
 let bookshelfTest = require('bookshelf')(knexTest);
 let bookshelf = require('bookshelf')(knex);
