@@ -4,6 +4,9 @@ services:
  web:
     build: .
     command: "npm start"
+    links:
+        - redis
+        - mysql
     volumes:
       - .:/usr/app/
       - /usr/app/node_modules
@@ -12,6 +15,8 @@ services:
     depends_on:
       - redis
       - mysql
+    networks:
+        - web_sql_bridge
  redis:
     image: 'bitnami/redis:latest'
     environment:
@@ -23,10 +28,20 @@ services:
      container_name: mysql
      restart: always
      environment:
-         - MYSQL_ROOT_PASSWORD=goon
-         - MYSQL_DATABASE=TERRA_TEST
-         - MYSQL_DATABASE=TERRA_DEV
+         - MYSQL_ROOT_PASSWORD="goon"
+         - MYSQL_DATABASE="TERRA_TEST"
+         - MYSQL_DATABASE="TERRA_DEV"
+         - MYSQL_USER="tester"
+         - MYSQL_PASSWORD="goon"
      ports:
-         - "33061:3306"
+         - "3306:3306"
+     networks:
+         - web_sql_bridge
+         vpcbr:
+             ipv4_address: 127.0.0.1
 volumes:
     appconf:
+
+networks:
+  web_sql_bridge:
+    driver: bridge
