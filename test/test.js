@@ -16,6 +16,8 @@ let helperFunctions = require('./testRequests.js');
 let database = new DataBase("test");
 let logger = new Log();
 
+console.log("Testing");
+
 describe('Database Module Test', () => {
   beforeEach((done) => {
       exec("knex migrate:rollback --env testing", (err, stdout, stderr) => {
