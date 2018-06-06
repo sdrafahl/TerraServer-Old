@@ -4,7 +4,7 @@
         "connection": {
             "host": "mysql",
             "database": "TERRA_DEV",
-            "user": "dev",
+            "user": "root",
             "port": "3306",
             "password": "goon",
             "charset": "utf8",
@@ -17,7 +17,7 @@
         "connection": {
             "host": "DB",
             "database": "TERRA_TEST",
-            "user": "tester",
+            "user": "root",
             "port": "3306",
             "password": "goon",
             "charset": "utf8",
