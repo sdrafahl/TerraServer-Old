@@ -16,7 +16,6 @@ services:
       - "3000:3000"
     depends_on:
       - redis
-      - DB
     networks:
         - web_sql_bridge
 
@@ -26,6 +25,8 @@ services:
         - ALLOW_EMPTY_PASSWORD=yes
     ports:
         - '6379:6379'
+    depends_on:
+        - DB
  DB:
      image: mysql:5.7
      restart: always
