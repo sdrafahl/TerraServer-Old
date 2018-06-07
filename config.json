@@ -7,7 +7,7 @@
             "user": "root",
             "port": "3306",
             "password": "goon",
-            "charset": "utf8",
+            "charset": "utf8"
         }
     },
 
@@ -19,7 +19,7 @@
             "user": "root",
             "port": "3306",
             "password": "goon",
-            "charset": "utf8",
+            "charset": "utf8"
         }
     },
 
