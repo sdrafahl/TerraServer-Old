@@ -1,11 +1,6 @@
 version: '2'
 volumes:
 services:
- sut:
-     build: .
-     command: npm test
-     depends_on:
-         - web
  web:
     build: .
     command: "npm start"
