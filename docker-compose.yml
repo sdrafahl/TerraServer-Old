@@ -4,8 +4,6 @@ services:
  web:
     build: .
     command: "npm start"
-    enviroment:
-        - DATABASE_HOST=DB
     volumes:
       - .:/usr/app/
       - /usr/app/node_modules
