@@ -4,6 +4,8 @@ services:
  web:
     build: .
     command: "npm start"
+    enviroment:
+        - DATABASE_HOST=DB
     volumes:
       - .:/usr/app/
       - /usr/app/node_modules
@@ -14,6 +16,7 @@ services:
       - mysql
     networks:
         - web_sql_bridge
+
  redis:
     image: 'bitnami/redis:latest'
     environment:
@@ -30,6 +33,7 @@ services:
          - MYSQL_DATABASE="TERRA_DEV"
          - MYSQL_USER="tester"
          - MYSQL_PASSWORD="goon"
+         - DATABASE_HOST=docker-mysql
      ports:
          - "3306:3306"
      networks:
