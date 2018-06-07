@@ -21,7 +21,7 @@
             "port": "3306",
             "password": "goon",
             "charset": "utf8",
-            "host": "DB"
+            "host": "docker-mysql"
         }
     },
 
