@@ -28,7 +28,6 @@ services:
      environment:
          - MYSQL_ROOT_PASSWORD=goon
          - MYSQL_DATABASE=TERRA_TEST
-         - MYSQL_DATABASE=TERRA_DEV
          - MYSQL_USER=tester
          - MYSQL_PASSWORD=goon
          - DATABASE_HOST=docker-mysql

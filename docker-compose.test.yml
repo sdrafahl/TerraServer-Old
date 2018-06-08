@@ -16,6 +16,7 @@ services:
       - "3000:3000"
     depends_on:
       - redis
+      - DB
     networks:
         - web_sql_bridge
 
@@ -25,17 +26,16 @@ services:
         - ALLOW_EMPTY_PASSWORD=yes
     ports:
         - '6379:6379'
-    depends_on:
-        - DB
  DB:
      image: mysql:5.7
+     container_name: mysql
      restart: always
      environment:
-         - MYSQL_ROOT_PASSWORD="goon"
-         - MYSQL_DATABASE="TERRA_TEST"
-         - MYSQL_DATABASE="TERRA_DEV"
-         - MYSQL_USER="tester"
-         - MYSQL_PASSWORD="goon"
+         - MYSQL_ROOT_PASSWORD=goon
+         - MYSQL_DATABASE=TERRA_TEST
+         - MYSQL_USER=tester
+         - MYSQL_PASSWORD=goon
+         - DATABASE_HOST=docker-mysql
      ports:
          - "3306:3306"
      networks:
