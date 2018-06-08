@@ -16,7 +16,7 @@
         "connection": {
             "host": "DB",
             "database": "TERRA_TEST",
-            "user": "root",
+            "user": "tester",
             "port": "3306",
             "password": "goon",
             "charset": "utf8"
