@@ -26,11 +26,11 @@ services:
      container_name: mysql
      restart: always
      environment:
-         - MYSQL_ROOT_PASSWORD="goon"
-         - MYSQL_DATABASE="TERRA_TEST"
-         - MYSQL_DATABASE="TERRA_DEV"
-         - MYSQL_USER="tester"
-         - MYSQL_PASSWORD="goon"
+         - MYSQL_ROOT_PASSWORD=goon
+         - MYSQL_DATABASE=TERRA_TEST
+         - MYSQL_DATABASE=TERRA_DEV
+         - MYSQL_USER=tester
+         - MYSQL_PASSWORD=goon
          - DATABASE_HOST=docker-mysql
      ports:
          - "3306:3306"
