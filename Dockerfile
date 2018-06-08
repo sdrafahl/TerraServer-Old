@@ -30,7 +30,9 @@ ADD configKeys.json TerraServer/
 
 WORKDIR /TerraServer
 
-run npm install
+Run npm install
+
+Run npm install knex
 
 EXPOSE 3000
 
