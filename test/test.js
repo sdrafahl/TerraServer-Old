@@ -16,15 +16,6 @@ let helperFunctions = require('./testRequests.js');
 let database = new DataBase("test");
 let logger = new Log();
 
-describe('Database Module Test', () => {
-  beforeEach((done) => {
-      exec("knex migrate:rollback --env testing", (err, stdout, stderr) => {
-          exec("knex migrate:latest --env testing", (err, stdout, stderr) => {
-              done();
-          });
-      });
-  });
-
   describe('userController', () => {
     describe('post -> /create', () => {
       it('A user should be created', (done) => {
@@ -58,7 +49,6 @@ describe('Database Module Test', () => {
         });
     });
   });
-});
 
 describe('requestController', () => {
     describe('post -> /handleRequest', () => {

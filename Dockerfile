@@ -32,7 +32,7 @@ WORKDIR /TerraServer
 
 Run npm install
 
-Run npm install knex
+Run npm install -g knex
 
 EXPOSE 3000
 
