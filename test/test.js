@@ -6,7 +6,7 @@ let mysql = require("mysql");
 let fs = require('fs');
 let bcrypt = require('bcryptjs');
 let exec = require('child_process').exec;
-let sleep = require('sleep');
+let sleep = require('system-sleep');
 
 let Log = require('../modules/Log.js');
 let DataBase = require('../modules/database.js');
@@ -20,7 +20,7 @@ let logger = new Log();
   describe('userController', () => {
     describe('post -> /create', () => {
       it('A user should be created', (done) => {
-          sleep.sleep(2000);
+          sleep(2000);
           let testUserRequest = helperFunctions.generateFakeUserRequest();
           database.registerUser(testUserRequest, (callBack) => {
               User.where('NAME', testUserRequest.body.username)
@@ -41,7 +41,7 @@ let logger = new Log();
 
     describe('post -> /login', () => {
         it('A user should be created and also be able to login', (done) => {
-            sleep.sleep(2000);
+            sleep(2000);
             let testUserRequest = helperFunctions.generateFakeUserRequest();
             database.registerUser(testUserRequest, (callBack) => {
                 database.login(testUserRequest, (callBack) => {
@@ -56,7 +56,7 @@ let logger = new Log();
 describe('requestController', () => {
     describe('post -> /handleRequest', () => {
         it('A request should be saved and associated to a user', (done) => {
-            sleep.sleep(2000);
+            sleep(2000);
             let testUserRequest = helperFunctions.generateFakeUserRequest();
             let testServiceRequest = helperFunctions.generateFakeServiceRequest();
             database.registerUser(testUserRequest, (callBack) => {
@@ -78,7 +78,7 @@ describe('requestController', () => {
             });
         });
         it('A request should not be created because the User is not logged in', (done) => {
-            sleep.sleep(2000);
+            sleep(2000);
             let testServiceRequest = helperFunctions.generateFakeServiceRequest4();
             let testUserRequest = helperFunctions.generateFakeUserRequest();
             database.registerUser(testUserRequest, (callBack) => {
@@ -102,7 +102,7 @@ describe('requestController', () => {
 
     describe('post -> /searchRequest', () => {
         it('A set of requests should be created and be searched', (done) => {
-            sleep.sleep(2000);
+            sleep(2000);
             let testUserRequest = helperFunctions.generateFakeUserRequest();
             let serviceRequest1 = helperFunctions.generateFakeServiceRequest1();
             let serviceRequest2 = helperFunctions.generateFakeServiceRequest2();
