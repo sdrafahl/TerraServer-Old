@@ -6,6 +6,8 @@ services:
      command: npm test
      depends_on:
          - web
+         - DB
+         - redis
  web:
     build: .
     command: "npm start"
