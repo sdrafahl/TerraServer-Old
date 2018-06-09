@@ -8,6 +8,8 @@ services:
          - web
          - DB
          - redis
+     networks:
+         - web_sql_bridge
  web:
     build: .
     command: "npm start"
