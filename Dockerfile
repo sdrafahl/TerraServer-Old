@@ -34,6 +34,8 @@ Run npm install
 
 Run npm install -g knex
 
+Run apt-get install mysql-client -y
+
 EXPOSE 3000
 
 CMD npm start

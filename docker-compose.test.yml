@@ -1,13 +1,12 @@
-version: '2'
+version: '3'
 volumes:
 services:
  sut:
      build: .
      command: npm test
      depends_on:
-         - web
          - DB
-         - redis
+         - web
      networks:
          - web_sql_bridge
  web:
@@ -20,7 +19,6 @@ services:
       - "3000:3000"
     depends_on:
       - redis
-      - DB
     networks:
         - web_sql_bridge
 
@@ -30,6 +28,8 @@ services:
         - ALLOW_EMPTY_PASSWORD=yes
     ports:
         - '6379:6379'
+    depends_on:
+        - DB
  DB:
      image: mysql:5.7
      container_name: mysql
@@ -42,6 +42,10 @@ services:
          - DATABASE_HOST=docker-mysql
      ports:
          - "3306:3306"
+     healthcheck:
+            test:  ["CMD", "mysqlshow --user=tester --password=goon TERRA_TEST| grep -v Wildcard | grep -o TERRA_TEST"]
+            timeout: 1s
+            retries: 120
      networks:
          - web_sql_bridge
 volumes:
