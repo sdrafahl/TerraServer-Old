@@ -47,14 +47,10 @@ jobs:
     docker:
       - image: docker:17.05.0-ce-git
     steps:
-        - run:
-            name: Start Docker Container
-            command: |
-                docker-compose up
         - tests:
-            name: Run Backend tests
+            name: Start Docker Container for Testing
             command: |
-                docker exec -it app npm test
+                docker-compose -f docker-compose.test.yml up --abort-on-container-exit --exit-code-from sut
   deploy:
     requires:
         - test

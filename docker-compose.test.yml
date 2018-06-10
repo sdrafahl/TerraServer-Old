@@ -6,22 +6,8 @@ services:
      command: npm test
      depends_on:
          - DB
-         - web
      networks:
          - web_sql_bridge
- web:
-    build: .
-    command: "npm start"
-    volumes:
-      - .:/usr/app/
-      - /usr/app/node_modules
-    ports:
-      - "3000:3000"
-    depends_on:
-      - redis
-    networks:
-        - web_sql_bridge
-
  redis:
     image: 'bitnami/redis:latest'
     environment:
