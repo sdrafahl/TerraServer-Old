@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "start": "node ./bin/www",
-    "test": "sleep 1m; knex migrate:rollback --env testing; knex migrate:latest --env testing; mocha -t 11000 --exit"
+    "test": "sleep 2m; knex migrate:rollback --env testing; knex migrate:latest --env testing; mocha -t 11000 --exit"
   },
   "dependencies": {
     "bcrypt": "^1.0.3",
