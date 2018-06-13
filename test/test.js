@@ -18,7 +18,7 @@ let logger = new Log();
 
   describe('userController', () => {
     describe('post -> /create', () => {
-      it('A user should be created', (done) => {
+      it('A user should be created', () => {
           let testUserRequest = helperFunctions.generateFakeUserRequest();
           database.registerUser(testUserRequest, (callBack) => {
               User.where('NAME', testUserRequest.body.username)
@@ -27,23 +27,20 @@ let logger = new Log();
                   assert.equal(user.get('NAME'), testUserRequest.body.username);
                   assert.equal(user.get('CITY'), testUserRequest.body.city);
                   assert.equal(callBack.success, true);
-                  done();
               })
               .catch((err) => {
                  assert(false);
-                 done();
               });
           });
       });
     });
 
     describe('post -> /login', () => {
-        it('A user should be created and also be able to login', (done) => {
+        it('A user should be created and also be able to login', () => {
             let testUserRequest = helperFunctions.generateFakeUserRequest();
             database.registerUser(testUserRequest, (callBack) => {
                 database.login(testUserRequest, (callBack) => {
                     assert.equal(callBack.success, true);
-                    done();
                 });
             });
         });
@@ -52,7 +49,7 @@ let logger = new Log();
 
 describe('requestController', () => {
     describe('post -> /handleRequest', () => {
-        it('A request should be saved and associated to a user', (done) => {
+        it('A request should be saved and associated to a user', () => {
             let testUserRequest = helperFunctions.generateFakeUserRequest();
             let testServiceRequest = helperFunctions.generateFakeServiceRequest();
             database.registerUser(testUserRequest, (callBack) => {
@@ -64,16 +61,14 @@ describe('requestController', () => {
                         let jsonRequest = JSON.parse(request[0].JSON_REQUEST);
                         assert.equal(jsonRequest.lawnCare.height, testServiceRequest.body.serviceRequest.lawnCare.height);
                         assert.equal(request[0].price, testServiceRequest.body.serviceRequest.price);
-                        done();
                     })
                     .catch((err) => {
                        assert(false);
-                       done();
                     });
                 });
             });
         });
-        it('A request should not be created because the User is not logged in', (done) => {
+        it('A request should not be created because the User is not logged in', () => {
             let testServiceRequest = helperFunctions.generateFakeServiceRequest4();
             let testUserRequest = helperFunctions.generateFakeUserRequest();
             database.registerUser(testUserRequest, (callBack) => {
@@ -84,11 +79,9 @@ describe('requestController', () => {
                         assert.equal(callBack.message, 'Cannot Make Request When Not Logged In');
                         let request = user.related('requests').toJSON();
                         assert.equal(request, '');
-                        done();
                     })
                     .catch((error) => {
                        assert(false);
-                       done();
                     });
                 });
             });
@@ -96,7 +89,7 @@ describe('requestController', () => {
     });
 
     describe('post -> /searchRequest', () => {
-        it('A set of requests should be created and be searched', (done) => {
+        it('A set of requests should be created and be searched', () => {
             let testUserRequest = helperFunctions.generateFakeUserRequest();
             let serviceRequest1 = helperFunctions.generateFakeServiceRequest1();
             let serviceRequest2 = helperFunctions.generateFakeServiceRequest2();
@@ -109,7 +102,6 @@ describe('requestController', () => {
                                 assert.equal(models.data[0].streetAddress, '201 E 17th St N');
                                 assert.equal(models.data[1].streetAddress, '801-1099 W 2nd St S');
                                 assert.equal(models.data[2].streetAddress, '2728-2798 S 12th Ave W');
-                                done();
                             });
                         });
                     });

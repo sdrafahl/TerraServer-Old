@@ -1,9 +1,11 @@
-version: '2'
+version: '3'
 volumes:
 services:
  web:
-    build: .
     command: "npm start"
+    build:
+        context: .
+        dockerfile: Dockerfile
     volumes:
       - .:/usr/app/
       - /usr/app/node_modules
