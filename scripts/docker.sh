@@ -3,7 +3,7 @@
 if [ $# -eq 0 ]
   then
     echo "No arguments supplied"
-    echo "Please give a argument -localTest, -repoTest, -build, -cleanBuild, or -run"
+    echo "Please give a argument -localTest, -localBuildClean,-repoBuildClean , -repoTest, -build, -cleanBuild, or -run"
     exit 1
 fi
 
@@ -19,6 +19,16 @@ function buildDocker {
     docker-compose build
 }
 
+function repoBuildClean {
+    sudo docker system prune -a
+    docker-compose -f docker-compose.test.repo.yml build
+}
+
+function localBuildClean {
+    sudo docker system prune -a
+    docker-compose -f docker-compose.test.local.yml build
+}
+
 function cleanBuildDocker {
     echo "Cleaning"
     docker system prune -a
@@ -32,6 +42,8 @@ function runDocker {
 case "$1" in
     "-localTest") localTest;;
     "-repoTest") repoTest;;
+    "-localBuildClean") localBuildClean;;
+    "-repoBuildClean") repoBuildClean;;
     "-build") buildDocker;;
     "-cleanBuild") cleanBuildDocker;;
     "-run") runDocker;;
