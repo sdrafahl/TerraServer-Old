@@ -44,7 +44,7 @@ app.use((error, request, response, next) => {
 });
 
 app.get('*', (req, res,next) => {
-    res.sendFile(path.join(__dirname, '../../TerraWeb/build') +
+    res.sendFile(path.join(__dirname, '../TerraWeb/build') +
     '/index.html');
 });
 

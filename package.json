@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "start": "node ./bin/www",
-    "test": "./scripts/tests.sh"
+    "test": "./scripts/npmTests.sh"
   },
   "dependencies": {
     "bcrypt": "^1.0.3",

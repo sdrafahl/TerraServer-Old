@@ -1,28 +1,23 @@
 version: '3'
 volumes:
 services:
- web:
-    command: "npm start"
-    build:
-        context: .
-        dockerfile: repo.Dockerfile
-    volumes:
-      - .:/usr/app/
-      - /usr/app/node_modules
-    ports:
-      - "3000:3000"
-    depends_on:
-      - redis
-      - DB
-    networks:
-        - web_sql_bridge
-
+ sut:
+     build:
+         context: .
+         dockerfile: repo.Dockerfile
+     command: npm test
+     depends_on:
+         - DB
+     networks:
+         - web_sql_bridge
  redis:
     image: 'bitnami/redis:latest'
     environment:
         - ALLOW_EMPTY_PASSWORD=yes
     ports:
         - '6379:6379'
+    depends_on:
+        - DB
  DB:
      image: mysql:5.7
      container_name: mysql
@@ -35,6 +30,10 @@ services:
          - DATABASE_HOST=docker-mysql
      ports:
          - "3306:3306"
+     healthcheck:
+            test:  ["CMD", "mysqlshow --user=tester --password=goon TERRA_TEST| grep -v Wildcard | grep -o TERRA_TEST"]
+            timeout: 1s
+            retries: 120
      networks:
          - web_sql_bridge
 volumes:
