@@ -47,7 +47,7 @@ jobs:
     docker:
       - image: docker:17.05.0-ce-git
     steps:
-        - tests:
+        - test:
             name: Start Docker Container for Testing
             command: |
                 docker-compose -f docker-compose.test.yml up --abort-on-container-exit --exit-code-from sut
