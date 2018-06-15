@@ -61,7 +61,7 @@ jobs:
         - run:
             name: Start Docker Container for Testing
             command: |
-                docker-compose -f docker-compose.test.repo.yml build --abort-on-container-exit --exit-code-from sut
+                docker-compose -f docker-compose.test.repo.yml build
         - run:
             name: Start Docker Container for Testing
             command: |
