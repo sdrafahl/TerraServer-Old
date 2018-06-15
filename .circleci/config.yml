@@ -26,6 +26,7 @@ jobs:
             set +o pipefail
             docker load -i /caches/app.tar | true
       - run: touch configKeys.json | echo $googleGeocode > configKeys.json | touch passwords.json | echo {"database":$databasePassword} > passwords.json
+      - run: ls
       - run:
           name: Build application Docker image
           command: |
