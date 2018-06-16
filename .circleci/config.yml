@@ -1,6 +1,6 @@
 version: 1
 jobs:
-  build:
+  build_test_deploy:
     working_directory: /app
     docker:
       - image: docker:17.05.0-ce-git
@@ -34,12 +34,12 @@ jobs:
             if [ "${CIRCLE_BRANCH}" == "master" ]; then
               login="$(aws ecr get-login)"
               ${login}
-              docker tag terraserver_web ${AWS_ACCOUNT_ID}.dkr.ecr.us-east-2.amazonaws.com/terra-repo
-              docker push ${AWS_ACCOUNT_ID}.dkr.ecr.us-east-2.amazonaws.com/terra-repo
+              docker-compose tag terraserver_web ${AWS_ACCOUNT_ID}.dkr.ecr.us-east-2.amazonaws.com/terra-repo
+              docker-compose push ${AWS_ACCOUNT_ID}.dkr.ecr.us-east-2.amazonaws.com/terra-repo
             fi
 
 workflows:
   version: 1
   build_and_test:
     jobs:
-      - build
+      - build_test_deploy
