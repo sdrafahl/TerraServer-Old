@@ -39,57 +39,26 @@ jobs:
           key: v1-{{ .Branch }}-{{ epoch }}
           paths:
             - /caches/app.tar
+      - run:
+          name: Build Docker Container for Testing
+          command: |
+              docker-compose -f docker-compose.test.repo.yml build
+      - run:
+          name: Start Docker Container for Testing
+          command: |
+              docker-compose -f docker-compose.test.repo.yml up --abort-on-container-exit --exit-code-from sut
+      - deploy:
+          name: Push application Docker image
+          command: |
+            if [ "${CIRCLE_BRANCH}" == "master" ]; then
+              login="$(aws ecr get-login)"
+              ${login}
+              docker tag app ${AWS_ACCOUNT_ID}.dkr.ecr.us-east-2.amazonaws.com/terra-repo
+              docker push ${AWS_ACCOUNT_ID}.dkr.ecr.us-east-2.amazonaws.com/terra-repo
+            fi
 
-  test:
-    requires:
-        - build
-    working_directory: /app
-    docker:
-      - image: docker:17.05.0-ce-git
-    steps:
-        - checkout
-        - setup_remote_docker
-        - run:
-            name: Install dependencies
-            command: |
-              apk add --no-cache \
-                py-pip=9.0.0-r1
-              pip install \
-                docker-compose==1.12.0 \
-                awscli==1.11.76
-        - run: touch configKeys.json | echo $googleGeocode > configKeys.json | touch passwords.json | echo {"database":$databasePassword} > passwords.json
-        - run:
-            name: Start Docker Container for Testing
-            command: |
-                docker-compose -f docker-compose.test.repo.yml build
-        - run:
-            name: Start Docker Container for Testing
-            command: |
-                docker-compose -f docker-compose.test.repo.yml up --abort-on-container-exit --exit-code-from sut
-  deploy:
-    requires:
-        - test
-    working_directory: /app
-    docker:
-      - image: docker:17.05.0-ce-git
-    steps:
-        - deploy:
-            name: Push application Docker image
-            command: |
-              if [ "${CIRCLE_BRANCH}" == "master" ]; then
-                login="$(aws ecr get-login)"
-                ${login}
-                docker tag app ${AWS_ACCOUNT_ID}.dkr.ecr.us-east-2.amazonaws.com/terra-repo
-                docker push ${AWS_ACCOUNT_ID}.dkr.ecr.us-east-2.amazonaws.com/terra-repo
-              fi
 workflows:
   version: 1
   build_and_test:
     jobs:
       - build
-      - test:
-          requires:
-              - build
-      - deploy:
-          requires:
-              - test
