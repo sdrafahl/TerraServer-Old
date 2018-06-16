@@ -18,8 +18,6 @@ WORKDIR /TerraWeb
 
 Run npm install
 
-Run npm run build-css
-
 Run npm run build
 
 WORKDIR ../
