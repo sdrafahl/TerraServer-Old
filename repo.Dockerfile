@@ -20,7 +20,7 @@ WORKDIR /TerraWeb
 
 Run npm install -g --save
 
-Run npm install -g create-react-app
+Run npm install -g --save
 
 Run npm run build
 
