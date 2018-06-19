@@ -12,11 +12,13 @@ Run apt-get install -y git
 
 Run apt-get install npm -y
 
+Run apt-get update -y && sudo apt-get install yarn -y
+
 Run git clone https://github.com/sdrafahl/TerraWeb.git
 
 WORKDIR /TerraWeb
 
-Run npm install -g npm@latest
+Run yarn install
 
 Run npm run build
 
