@@ -18,7 +18,7 @@ Run git clone https://github.com/sdrafahl/TerraWeb.git
 
 WORKDIR /TerraWeb
 
-Run npm install
+Run npm install -g --save
 
 Run npm run build
 
