@@ -20,6 +20,8 @@ WORKDIR /TerraWeb
 
 Run npm install -g --save npm@latest
 
+Run npm install --dev
+
 Run npm run build
 
 WORKDIR ../
