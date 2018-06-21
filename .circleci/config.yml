@@ -44,11 +44,13 @@ workflows:
   build_and_test:
     jobs:
       - build_test_deploy
-  schedule-workflow:
-    triggers:
+  nightly:
+      triggers:
         - schedule:
             cron: "0 * * * *"
             filters:
-                branches:
-                    only:
-                       - master
+              branches:
+                only:
+                  - master
+      jobs:
+          - build_test_deploy
