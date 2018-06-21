@@ -36,7 +36,7 @@ jobs:
               login="$(aws ecr get-login)"
               ${login}
               docker tag app_web ${AWS_ACCOUNT_ID}.dkr.ecr.us-east-2.amazonaws.com/terra-repo
-              docker-compose push ${AWS_ACCOUNT_ID}.dkr.ecr.us-east-2.amazonaws.com/terra-repo
+              docker push ${AWS_ACCOUNT_ID}.dkr.ecr.us-east-2.amazonaws.com/terra-repo
             fi
 
 workflows:
