@@ -44,7 +44,7 @@ workflows:
   build_and_test:
     jobs:
       - build_test_deploy
-  nightly:
+  schedule-workflow:
       triggers:
         - schedule:
             cron: "0 * * * *"
