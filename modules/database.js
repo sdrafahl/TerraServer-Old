@@ -10,22 +10,15 @@ let config = require('../config.json');
 let keys = require('../configKeys.json');
 let Log = require('./Log.js');
 
-
 let logger = new Log();
 let User;
 let Request;
 let geocoder;
 
-
-function dataBaseModule(type) {
+function dataBaseModule() {
     let models = require('../models/UsersRequests.js');
-    if(type === "test") {
-        User = models.UserTest;
-        Request = models.RequestTest;
-    } else {
-        User = models.User;
-        Request = models.Request;
-    }
+    User = models.User;
+    Request = models.Request;
     geocoder = Geocoder({
         key: keys.googleMapsGeocoding,
     });

@@ -24,8 +24,8 @@ services:
      restart: always
      environment:
          - MYSQL_ROOT_PASSWORD=goon
-         - MYSQL_DATABASE=TERRA_TEST
-         - MYSQL_USER=tester
+         - MYSQL_DATABASE=TERRA_DEV
+         - MYSQL_USER=root
          - MYSQL_PASSWORD=goon
          - DATABASE_HOST=docker-mysql
      ports:

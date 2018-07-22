@@ -3,8 +3,8 @@ sleep 2m
 
 echo "Running Mocha Tests on Server Side."
 
-knex migrate:rollback --env testing
-knex migrate:latest --env testing; mocha -t 11000 --exit
+knex migrate:rollback --env development
+knex migrate:latest --env development
 mocha -t 11000 --exit
 
 echo "Running Jest tests on React Side."

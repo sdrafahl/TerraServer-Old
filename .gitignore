@@ -2,3 +2,4 @@
 node_modules
 configKeys.json
 *.log
+/jest_0

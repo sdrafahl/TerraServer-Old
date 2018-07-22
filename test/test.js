@@ -13,7 +13,7 @@ let User = require('../models/UsersRequests.js').UserTest;
 let Request = require('../models/UsersRequests.js').RequestTest;
 let helperFunctions = require('./testRequests.js');
 
-let database = new DataBase("test");
+let database = new DataBase();
 let logger = new Log();
 
   describe('userController', () => {

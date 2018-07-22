@@ -4,7 +4,7 @@ let DataBase = require('../modules/database.js');
 let config = require('../config.json');
 
 let router = express.Router();
-let database = new DataBase(config.database_dev);
+let database = new DataBase();
 
 router.post('/handleRequest', (request, response) => {
     database.handleRequest(request, (callBack) => {
