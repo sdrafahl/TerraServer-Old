@@ -48,17 +48,24 @@ knex migrate:make setup
 
 ## Testing
 
-Express uses Mocha tests to test for functionality and unit testing.
+For testing there is a docker-compose file for local code and one for the master branch on the repo.
 
-To run the tests you can either run from the scripts directory.   
-
-```
-./tests.sh
+To run local code.
 
 ```
-Or you can run it using npm
+docker-compose -f docker-compose.test.local.yml up
+
+```
+
+To run repo tests
+
+```
+docker-compose -f docker-compose.test.repo.yml up
+
+```
+
+to run tests without docker
 
 ```
 npm test
-
 ```
