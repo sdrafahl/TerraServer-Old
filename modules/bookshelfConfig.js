@@ -13,5 +13,4 @@ let bookshelf = require('bookshelf')(knex);
 
 bookshelf.plugin(require('bookshelf-check-duplicates'));
 
-module.exports.bookshelfTest = bookshelfTest;
 module.exports.bookshelf = bookshelf;

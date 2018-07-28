@@ -9,6 +9,7 @@ let Geocoder = require('google-geocoder');
 let config = require('../config.json');
 let keys = require('../configKeys.json');
 let Log = require('./Log.js');
+let registerUser = require('./databaseMethods/registerUser.js');
 
 let logger = new Log();
 let User;
@@ -25,49 +26,7 @@ function dataBaseModule() {
 };
 
 method.registerUser = (request, callBack) => {
-    let {
-        email,
-        username,
-        address,
-        city,
-        zip,
-        state,
-        password,
-        country,
-    } = request.body;
-
-    password = hashPassword(decrypt(password));
-
-    if(!testRegistration(request)) {
-        return callBack ({
-            success: false,
-        });
-    }
-
-    let insert = {
-        NAME: username,
-        PASSWORD: password,
-        EMAIL: email,
-        ADDRESS: address,
-        CITY: city,
-        ZIP: zip,
-        STATE: state,
-        COUNTRY: country,
-    };
-
-    User.forge(insert)
-        .save()
-        .then((user) => {
-            return callBack ({
-                success: true,
-            });
-        })
-        .catch(function (err) {
-            logger.log(err);
-            return callBack ({
-                success: false,
-            });
-        });
+    registerUser.registerUser(request, callBack);
 }
 
 method.login = (request, callBack) => {
