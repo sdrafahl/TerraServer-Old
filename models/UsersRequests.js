@@ -18,7 +18,5 @@ let Request = bookshelf.Model.extend ({
 
 module.exports = {
     User: User,
-    UserTest: UserTest,
     Request: Request,
-    RequestTest: RequestTest,
 };
