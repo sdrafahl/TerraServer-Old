@@ -24,14 +24,14 @@ services:
      restart: always
      environment:
          - MYSQL_ROOT_PASSWORD=goon
-         - MYSQL_DATABASE=TERRA_TEST
+         - MYSQL_DATABASE=TERRA_DEV
          - MYSQL_USER=tester
          - MYSQL_PASSWORD=goon
          - DATABASE_HOST=docker-mysql
      ports:
          - "3306:3306"
      healthcheck:
-            test:  ["CMD", "mysqlshow --user=tester --password=goon TERRA_TEST| grep -v Wildcard | grep -o TERRA_TEST"]
+            test:  ["CMD", "mysqlshow --user=tester --password=goon TERRA_DEV| grep -v Wildcard | grep -o TERRA_DEV"]
             timeout: 1s
             retries: 120
      networks:

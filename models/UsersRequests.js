@@ -1,5 +1,4 @@
 let bookshelf = require('../modules/bookshelfConfig.js').bookshelf;
-let bookshelfTest = require('../modules/bookshelfConfig.js').bookshelfTest;
 
 let User = bookshelf.Model.extend ({
     tableName: "USERS",

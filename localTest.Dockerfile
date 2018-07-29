@@ -18,6 +18,8 @@ WORKDIR /TerraWeb
 
 Run npm install
 
+Run npm test
+
 Run npm run build
 
 WORKDIR ../
@@ -33,5 +35,7 @@ Run npm install
 Run npm install -g knex
 
 Run apt-get install mysql-client -y
+
+Run npm test
 
 EXPOSE 3000
