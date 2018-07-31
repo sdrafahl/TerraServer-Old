@@ -18,4 +18,8 @@ router.post('/login', (request, response) => {
     });
 });
 
+router.post('/isLoggedIn', (request, response) => {
+    response.json({ loggedIn: request.session.loggedIn });
+});
+
 module.exports = router;
