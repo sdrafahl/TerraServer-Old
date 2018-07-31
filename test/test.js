@@ -9,8 +9,8 @@ let exec = require('child_process').exec;
 
 let Log = require('../modules/Log.js');
 let DataBase = require('../modules/database.js');
-let User = require('../models/UsersRequests.js').UserTest;
-let Request = require('../models/UsersRequests.js').RequestTest;
+let User = require('../models/UsersRequests.js').User;
+let Request = require('../models/UsersRequests.js').Request;
 let helperFunctions = require('./testRequests.js');
 
 let database = new DataBase();

@@ -1,8 +1,32 @@
-let models = require('../../models/UsersRequests.js');
+let bcrypt = require('bcryptjs');
+let crypto = require('crypto');
 
-const User = models.User;
+let Log = require('../Log.js');
+let config = require('../../config.json');
+let decrypt = require('./decrypt.js');
 
-const registerUser = (request, callBack) => {
+let logger = new Log();
+
+const hashPassword = (password) => {
+    let salt = bcrypt.genSaltSync(10);
+    return bcrypt.hashSync(password, salt);
+}
+
+const testRegistration = (request) => {
+    let emailRegularExpression = /\S+@\S+\.\S+/;
+    let zipCodeRegularExpression = /(^\d{5}$)|(^\d{5}-\d{4}$)/;
+    let passwordLengthRequirement = 8;
+    let userNameLengthRequirement = 8;
+
+    let emailMatchesFormat = emailRegularExpression.test(request.body.email);
+    let passwordIsLongEnough = request.body.password.length >= passwordLengthRequirement;
+    let userNameIsLongEnough = request.body.username.length >= userNameLengthRequirement;
+    let zipCodeMatchesFormat = zipCodeRegularExpression.test(request.body.zip.toString());
+
+    return emailMatchesFormat && passwordIsLongEnough && userNameIsLongEnough && zipCodeMatchesFormat;
+}
+
+const registerUser = (request, callBack, User) => {
     let {
         email,
         username,
