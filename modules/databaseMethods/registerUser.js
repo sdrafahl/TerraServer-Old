@@ -72,4 +72,4 @@ const registerUser = (request, callBack, User) => {
         });
 }
 
-module.exports.registerUser = registerUser;
+module.exports = registerUser;

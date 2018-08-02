@@ -24,11 +24,10 @@ process.env.DEBUG = true;
 let redisStore = new RedisStore(config.redis.store_data);
 let sessionData = config.redis.redis_argument;
 sessionData.store = redisStore;
-
+app.use(cookieParser('SEKR37'));
 app.use(session (sessionData));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
-app.use(cookieParser());
 app.use(express.static(path.join(__dirname, '../../TerraWeb/build')));
 
 app.use('/users', userController);

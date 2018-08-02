@@ -18,4 +18,13 @@ router.post('/login', (request, response) => {
     });
 });
 
+router.post('/isLoggedIn', (request, response) => {
+    let responseValue = false;
+    if(request.session.loggedIn === undefined) {
+        responseValue = false;
+    }
+    response.json({ loggedIn: responseValue });
+
+});
+
 module.exports = router;

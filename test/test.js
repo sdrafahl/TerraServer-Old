@@ -6,15 +6,20 @@ let mysql = require("mysql");
 let fs = require('fs');
 let bcrypt = require('bcryptjs');
 let exec = require('child_process').exec;
+let chai = require('chai');
+let chaiHttp = require('chai-http');
+let should = chai.should();
 
 let Log = require('../modules/Log.js');
 let DataBase = require('../modules/database.js');
 let User = require('../models/UsersRequests.js').User;
 let Request = require('../models/UsersRequests.js').Request;
 let helperFunctions = require('./testRequests.js');
+let server = require('../app.js');
 
 let database = new DataBase();
 let logger = new Log();
+chai.use(chaiHttp);
 
   describe('userController', () => {
     describe('post -> /create', () => {
@@ -28,7 +33,8 @@ let logger = new Log();
                   assert.equal(user.get('CITY'), testUserRequest.body.city);
                   assert.equal(callBack.success, true);
               })
-              .catch((err) => {
+              .catch((error) => {
+                 logger.log(error);
                  assert(false);
               });
           });
@@ -38,10 +44,42 @@ let logger = new Log();
     describe('post -> /login', () => {
         it('A user should be created and also be able to login', () => {
             let testUserRequest = helperFunctions.generateFakeUserRequest();
-            database.registerUser(testUserRequest, (callBack) => {
+            database.registerUser(testUserRequest, (cb) => {
                 database.login(testUserRequest, (callBack) => {
                     assert.equal(callBack.success, true);
                 });
+            });
+        });
+    });
+
+    describe('post -> /isLoggedIn', () => {
+        it('isLoggedIn should return false if not logged in.', () => {
+            chai.request(server)
+                .post('/users/isLoggedIn')
+                .end((error, result) => {
+                    result.should.have.status(200);
+                    result.body.should.have.property('loggedIn').eql(false);
+                });
+        });
+        it('isLoggedIn should return true after logging in.', () => {
+            let testUserRequest = helperFunctions.generateFakeUserRequest();
+            database.registerUser(testUserRequest, (callBack) => {
+                chai.request(server)
+                    .post('/users/login')
+                    .send({
+                        username: testUserRequest.body.username,
+                        password: testUserRequest.body.password
+                     })
+                    .end((error, result) => {
+                        result.should.have.status(200);
+                        result.body.should.have.property('success').eql(true);
+                        chai.request(server)
+                            .post('/users/isLoggedIn')
+                            .end((error, result) => {
+                                result.should.have.status(200);
+                                result.body.should.have.property('loggedIn').eql(true);
+                            });
+                    });
             });
         });
     });
@@ -63,24 +101,6 @@ describe('requestController', () => {
                         assert.equal(request[0].price, testServiceRequest.body.serviceRequest.price);
                     })
                     .catch((err) => {
-                       assert(false);
-                    });
-                });
-            });
-        });
-        it('A request should not be created because the User is not logged in', () => {
-            let testServiceRequest = helperFunctions.generateFakeServiceRequest4();
-            let testUserRequest = helperFunctions.generateFakeUserRequest();
-            database.registerUser(testUserRequest, (callBack) => {
-                database.handleRequest(testServiceRequest ,(callBack) => {
-                    User.where('NAME', testUserRequest.body.username).fetch({
-                        'withRelated': ['requests']
-                    }).then((user) => {
-                        assert.equal(callBack.message, 'Cannot Make Request When Not Logged In');
-                        let request = user.related('requests').toJSON();
-                        assert.equal(request, '');
-                    })
-                    .catch((error) => {
                        assert(false);
                     });
                 });

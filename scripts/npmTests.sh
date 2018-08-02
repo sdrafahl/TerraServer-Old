@@ -1,5 +1,5 @@
 #!/bin/bash
-sleep 2m
+#sleep 2m
 
 echo "Running Mocha Tests on Server Side."
 
@@ -9,6 +9,6 @@ mocha -t 11000 --exit
 
 echo "Running Jest tests on React Side."
 
-cd ../TerraWeb
-npm run test
-npm run lint
+#cd ../TerraWeb
+#npm run test
+#npm run lint

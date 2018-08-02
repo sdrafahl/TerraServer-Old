@@ -28,7 +28,7 @@ function dataBaseModule() {
 };
 
 method.registerUser = (request, callBack) => {
-    registerUser.registerUser(request, callBack, User);
+    registerUser(request, callBack, User);
 }
 
 method.login = (request, callBack) => {
