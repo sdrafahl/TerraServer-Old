@@ -33,7 +33,8 @@ chai.use(chaiHttp);
                   assert.equal(user.get('CITY'), testUserRequest.body.city);
                   assert.equal(callBack.success, true);
               })
-              .catch((err) => {
+              .catch((error) => {
+                 logger.log(error);
                  assert(false);
               });
           });
@@ -43,7 +44,7 @@ chai.use(chaiHttp);
     describe('post -> /login', () => {
         it('A user should be created and also be able to login', () => {
             let testUserRequest = helperFunctions.generateFakeUserRequest();
-            database.registerUser(testUserRequest, (callBack) => {
+            database.registerUser(testUserRequest, (cb) => {
                 database.login(testUserRequest, (callBack) => {
                     assert.equal(callBack.success, true);
                 });
@@ -54,10 +55,10 @@ chai.use(chaiHttp);
     describe('post -> /isLoggedIn', () => {
         it('isLoggedIn should return false if not logged in.', () => {
             chai.request(server)
-                .post('/isLoggedIn')
+                .post('/users/isLoggedIn')
                 .end((error, result) => {
                     result.should.have.status(200);
-                    result.should.have.property('loggedIn').eql(false);
+                    result.body.should.have.property('loggedIn').eql(false);
                 });
         });
         it('isLoggedIn should return true after logging in.', () => {
@@ -71,13 +72,13 @@ chai.use(chaiHttp);
                      })
                     .end((error, result) => {
                         result.should.have.status(200);
-                        result.should.have.property('success').eql(true);
-                    });
-                chai.request(server)
-                    .post('/users/isLoggedIn')
-                    .end((error, result) => {
-                        result.should.have.status(200);
-                        result.should.have.property('loggedIn').eql(false);
+                        result.body.should.have.property('success').eql(true);
+                        chai.request(server)
+                            .post('/users/isLoggedIn')
+                            .end((error, result) => {
+                                result.should.have.status(200);
+                                result.body.should.have.property('loggedIn').eql(true);
+                            });
                     });
             });
         });
@@ -100,24 +101,6 @@ describe('requestController', () => {
                         assert.equal(request[0].price, testServiceRequest.body.serviceRequest.price);
                     })
                     .catch((err) => {
-                       assert(false);
-                    });
-                });
-            });
-        });
-        it('A request should not be created because the User is not logged in', () => {
-            let testServiceRequest = helperFunctions.generateFakeServiceRequest4();
-            let testUserRequest = helperFunctions.generateFakeUserRequest();
-            database.registerUser(testUserRequest, (callBack) => {
-                database.handleRequest(testServiceRequest ,(callBack) => {
-                    User.where('NAME', testUserRequest.body.username).fetch({
-                        'withRelated': ['requests']
-                    }).then((user) => {
-                        assert.equal(callBack.message, 'Cannot Make Request When Not Logged In');
-                        let request = user.related('requests').toJSON();
-                        assert.equal(request, '');
-                    })
-                    .catch((error) => {
                        assert(false);
                     });
                 });

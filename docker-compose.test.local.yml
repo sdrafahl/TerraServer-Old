@@ -15,7 +15,7 @@ services:
     environment:
         - ALLOW_EMPTY_PASSWORD=yes
     ports:
-        - '6379:6379'
+        - '4545:4545'
     depends_on:
         - DB
  DB:
