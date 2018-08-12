@@ -7,6 +7,7 @@ let router = express.Router();
 let database = new DataBase();
 
 router.post('/create', (request, response) => {
+    console.log("test");
     database.registerUser(request, (callBack) => {
         response.json(callBack);
     });

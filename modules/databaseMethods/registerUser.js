@@ -21,7 +21,7 @@ const testRegistration = (request) => {
     let emailMatchesFormat = emailRegularExpression.test(request.body.email);
     let passwordIsLongEnough = request.body.password.length >= passwordLengthRequirement;
     let userNameIsLongEnough = request.body.username.length >= userNameLengthRequirement;
-    let zipCodeMatchesFormat = zipCodeRegularExpression.test(request.body.zip.toString());
+    let zipCodeMatchesFormat = !request.body.zip || zipCodeRegularExpression.test(request.body.zip.toString());
 
     return emailMatchesFormat && passwordIsLongEnough && userNameIsLongEnough && zipCodeMatchesFormat;
 }
