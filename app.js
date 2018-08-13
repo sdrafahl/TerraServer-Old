@@ -5,6 +5,7 @@ let cookieParser = require('cookie-parser');
 let bodyParser = require('body-parser');
 let session = require('express-session');
 let RedisStore = require('connect-redis')(session);
+let cors = require('cors');
 
 let userController = require('./routes/userController');
 let requestController = require('./routes/requestController');
@@ -28,8 +29,8 @@ app.use(cookieParser('SEKR37'));
 app.use(session (sessionData));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
+app.use(cors());
 app.use(express.static(path.join(__dirname, '../../TerraWeb/build')));
-
 app.use('/users', userController);
 app.use('/request', requestController);
 app.use((error, request, response, next) => {

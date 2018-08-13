@@ -20,7 +20,7 @@ const testRegistration = (request) => {
 
     let emailMatchesFormat = emailRegularExpression.test(request.body.email);
     let passwordIsLongEnough = request.body.password.length >= passwordLengthRequirement;
-    let userNameIsLongEnough = request.body.username.length >= userNameLengthRequirement;
+    let userNameIsLongEnough = !request.body.username || request.body.username.length >= userNameLengthRequirement;
     let zipCodeMatchesFormat = !request.body.zip || zipCodeRegularExpression.test(request.body.zip.toString());
 
     return emailMatchesFormat && passwordIsLongEnough && userNameIsLongEnough && zipCodeMatchesFormat;
@@ -38,6 +38,8 @@ const registerUser = (request, callBack, User) => {
         country,
     } = request.body;
 
+    console.log(request.body);
+
     password = hashPassword(decrypt(password));
 
     if(!testRegistration(request)) {
@@ -47,14 +49,14 @@ const registerUser = (request, callBack, User) => {
     }
 
     let insert = {
-        NAME: username,
-        PASSWORD: password,
-        EMAIL: email,
-        ADDRESS: address,
-        CITY: city,
-        ZIP: zip,
-        STATE: state,
-        COUNTRY: country,
+        NAME: username || email || '',
+        PASSWORD: password || '',
+        EMAIL: email || '',
+        ADDRESS: address || '',
+        CITY: city || '',
+        ZIP: zip || '',
+        STATE: state || '',
+        COUNTRY: country || '',
     };
 
     User.forge(insert)
@@ -68,6 +70,7 @@ const registerUser = (request, callBack, User) => {
             logger.log(err);
             return callBack ({
                 success: false,
+                message: err
             });
         });
 }

@@ -4,11 +4,12 @@ let DataBase = require('../modules/database.js');
 let config = require('../config.json');
 
 let router = express.Router();
+
 let database = new DataBase();
 
 router.post('/create', (request, response) => {
-    console.log("test");
     database.registerUser(request, (callBack) => {
+        console.log(callBack);
         response.json(callBack);
     });
 });
