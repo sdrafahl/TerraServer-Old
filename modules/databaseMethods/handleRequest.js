@@ -3,6 +3,8 @@ let Log = require('../Log.js');
 let logger = new Log();
 
 const handleRequest = (request, callBack, Request, geocoder) => {
+    console.log("Handle Request");
+    console.log(request.session.loggedIn);
     if(request.session.loggedIn) {
         let {
             address,

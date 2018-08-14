@@ -15,6 +15,7 @@ const login = (request, callBack, User) => {
         bcrypt.compare(password, user.get('PASSWORD'), (error, response) => {
             if(response) {
                 request.session.loggedIn = true;
+                console.log(request.session.loggedIn);
                 request.session.userId = user.get('id');
                 return callBack ({success: true});
             } else {

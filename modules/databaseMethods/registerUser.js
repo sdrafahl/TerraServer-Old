@@ -38,8 +38,6 @@ const registerUser = (request, callBack, User) => {
         country,
     } = request.body;
 
-    console.log(request.body);
-
     password = hashPassword(decrypt(password));
 
     if(!testRegistration(request)) {

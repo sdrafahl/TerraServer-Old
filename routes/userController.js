@@ -9,7 +9,6 @@ let database = new DataBase();
 
 router.post('/create', (request, response) => {
     database.registerUser(request, (callBack) => {
-        console.log(callBack);
         response.json(callBack);
     });
 });

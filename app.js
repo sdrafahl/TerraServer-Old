@@ -37,6 +37,7 @@ app.use((error, request, response, next) => {
     response.locals.message = error.message;
     response.locals.error = request.app.get('env') === 'development' ? error : {};
     response.status(error.status || 500);
+    request.universalCookies
     if(error) {
         logger.log(error);
     }
