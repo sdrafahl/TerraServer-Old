@@ -29,7 +29,11 @@ app.use(cookieParser('SEKR37'));
 app.use(session (sessionData));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
-app.use(cors());
+app.use(cors({
+    origin: ['http://localhost:3000'],
+    methods: ['GET', 'POST'],
+    credentials: true
+}));
 app.use(express.static(path.join(__dirname, '../../TerraWeb/build')));
 app.use('/users', userController);
 app.use('/request', requestController);

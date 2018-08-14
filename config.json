@@ -24,7 +24,8 @@
             "resave": true,
             "saveUninitialized": true,
             "cookie": {
-              "secure": false
+              "secure": false,
+              "httpOnly": false
             }
         }
     },
