@@ -3,6 +3,7 @@
         "client": "mysql",
         "connection": {
             "database": "TERRA_DEV",
+            "host": "DB",
             "user": "root",
             "port": "3306",
             "password": "goon",
