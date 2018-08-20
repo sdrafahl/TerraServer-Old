@@ -2,8 +2,8 @@
     "database" : {
         "client": "mysql",
         "connection": {
-            "host": "DB",
             "database": "TERRA_DEV",
+            "host": "DB",
             "user": "root",
             "port": "3306",
             "password": "goon",
@@ -25,7 +25,8 @@
             "resave": true,
             "saveUninitialized": true,
             "cookie": {
-              "secure": false
+              "secure": false,
+              "httpOnly": false
             }
         }
     },

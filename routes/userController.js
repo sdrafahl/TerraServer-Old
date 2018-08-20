@@ -4,6 +4,7 @@ let DataBase = require('../modules/database.js');
 let config = require('../config.json');
 
 let router = express.Router();
+
 let database = new DataBase();
 
 router.post('/create', (request, response) => {
@@ -19,12 +20,11 @@ router.post('/login', (request, response) => {
 });
 
 router.post('/isLoggedIn', (request, response) => {
-    let responseValue = false;
     if(request.session.loggedIn === undefined) {
-        responseValue = false;
+        response.json({ loggedIn: false });
+    } else {
+        response.json({loggedIn: request.session.loggedIn})
     }
-    response.json({ loggedIn: responseValue });
-
 });
 
 module.exports = router;
