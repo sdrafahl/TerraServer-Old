@@ -12,13 +12,13 @@ Run apt-get install -y git
 
 Run apt-get install npm -y
 
-Run git clone https://github.com/sdrafahl/TerraWeb.git
+ADD . ../TerraWeb
 
 WORKDIR /TerraWeb
 
 Run npm install
 
-Run npm run build
+Run npm build
 
 WORKDIR ../
 
