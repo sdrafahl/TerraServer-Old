@@ -3,6 +3,7 @@ let Log = require('../Log.js');
 let logger = new Log();
 
 const handleRequest = (request, callBack, Request, geocoder) => {
+    request.session.dogs = 'dogs';
     if(request.session.loggedIn) {
         let {
             address,
@@ -18,7 +19,13 @@ const handleRequest = (request, callBack, Request, geocoder) => {
 
         let addressString = `${address} ${city}, ${state} ${zip} ${country}`;
         geocoder.find(addressString, (error, response) => {
-            logger.log(error);
+            if(error) {
+                logger.log(error);
+                return callBack ({
+                    success: false,
+                    message: error.status
+                });
+            }
 
             let insert = {
                 JSON_REQUEST: Buffer.from(JSON.stringify(serviceRequest)),

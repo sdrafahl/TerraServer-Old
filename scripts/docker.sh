@@ -1,4 +1,4 @@
-#!/bin/bash
+/sc#!/bin/bash
 
 if [ $# -eq 0 ]
   then

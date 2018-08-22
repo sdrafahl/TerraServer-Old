@@ -5,6 +5,7 @@ let cookieParser = require('cookie-parser');
 let bodyParser = require('body-parser');
 let session = require('express-session');
 let RedisStore = require('connect-redis')(session);
+let cors = require('cors');
 
 let userController = require('./routes/userController');
 let requestController = require('./routes/requestController');
@@ -24,19 +25,23 @@ process.env.DEBUG = true;
 let redisStore = new RedisStore(config.redis.store_data);
 let sessionData = config.redis.redis_argument;
 sessionData.store = redisStore;
-
+app.use(cookieParser('SEKR37'));
 app.use(session (sessionData));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
-app.use(cookieParser());
+app.use(cors({
+    origin: ['http://localhost:3000'],
+    methods: ['GET', 'POST'],
+    credentials: true
+}));
 app.use(express.static(path.join(__dirname, '../../TerraWeb/build')));
-
 app.use('/users', userController);
 app.use('/request', requestController);
 app.use((error, request, response, next) => {
     response.locals.message = error.message;
     response.locals.error = request.app.get('env') === 'development' ? error : {};
     response.status(error.status || 500);
+    request.universalCookies
     if(error) {
         logger.log(error);
     }

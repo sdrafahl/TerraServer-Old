@@ -1,5 +1,5 @@
 #!/bin/bash
-sleep 2m
+sleep 1m
 
 echo "Running Mocha Tests on Server Side."
 
